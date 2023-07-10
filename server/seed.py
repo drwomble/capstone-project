@@ -7,7 +7,7 @@ from random import randint, choice as rc
 
 # Local imports
 from app import app
-from models import * 
+from models import Deck, User, Spot, User_Deck, User_Spot
 from werkzeug.security import generate_password_hash
 
 if __name__ == '__main__':
@@ -16,8 +16,8 @@ if __name__ == '__main__':
         Deck.query.delete()
         User.query.delete()
         Spot.query.delete()
-        # User_Deck.query.delete()
-        # User_Spot.query.delete()
+        User_Deck.query.delete()
+        User_Spot.query.delete()
         print('Seeding data....')
         
         deck_1 = Deck(brand='Toy Machine', deck_name='test', price=25, image='https://www.stokedboardshop.be/cdn/shop/products/Stoned-Skateboarding-Super-Stoned-Mario-Skateboard-Deck.jpg?v=1591725642')

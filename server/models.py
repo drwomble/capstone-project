@@ -13,11 +13,10 @@ class Deck(db.Model, SerializerMixin):
     deck_name = db.Column(db.String)
     price = db.Column(db.Integer, nullable=False)
     image = db.Column(db.String)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     created_at = db.Column(db.DateTime, server_default = db.func.now())
     updated_at = db.Column(db.DateTime, onupdate = db.func.now())
     
-    users = db.relationship('User', backref='deck')
+    user_decks = db.relationship('User_Deck', back_populates='decks')
     
     serialize_only = ('id', 'brand', 'deck_name', 'price', 'image')
     
@@ -36,10 +35,10 @@ class User(db.Model, SerializerMixin):
     created_at = db.Column(db.DateTime, server_default = db.func.now())
     updated_at = db.Column(db.DateTime, onupdate = db.func.now())
     
-    decks = db.relationship('Deck', back_populates='user')
-    spots = db.relationship('Spot', back_populates='user')
-    # user_decks = db.relationship('User_Deck', backref='user')
-    # user_spots = db.relationship('User_Spot', backref='user')
+    user_spots = db.relationship('User_Spot', back_populates='users')
+    user_decks = db.relationship('User_Deck', back_populates='users')
+    # decks = db.relationship('Deck', back_populates='user')
+    # spots = db.relationship('Spot', back_populates='user')
     
     serialize_only = ('id', 'username', 'email', '-password_hash', 'profile_picture', 'bio')
     
@@ -53,49 +52,48 @@ class Spot(db.Model, SerializerMixin):
     location = db.Column(db.String)
     image = db.Column(db.String)
     description = db.Column(db.String)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     created_at = db.Column(db.DateTime, server_default = db.func.now())
     updated_at = db.Column(db.DateTime, onupdate = db.func.now())
     
-    # user_spots = db.relationship('User_Spot', backref='spot')
-    users = db.relationship('User', backref='spot')
+    # user_spots = db.relationship('User_Spot', back_populates='spot')
+    users = db.relationship('User', secondary='user_spots', back_populates='spot')
     
     serialize_only = ('id', 'location', 'image', 'description')
     
     def __repr__(self):
         return f'<Spot id: {self.id}, location: {self.location}>'
     
-# class User_Deck(db.Model, SerializerMixin):
-#     __tablename__ = 'user_decks'
+class User_Deck(db.Model, SerializerMixin):
+    __tablename__ = 'user_decks'
     
-#     id = db.Column(db.Integer, primary_key=True)
-#     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-#     deck_id = db.Column(db.Integer, db.ForeignKey('decks.id'))
-#     wishlist = db.Column(db.Boolean, default=False)
-#     created_at = db.Column(db.DateTime, server_default = db.func.now())
-#     updated_at = db.Column(db.DateTime, onupdate = db.func.now())
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    deck_id = db.Column(db.Integer, db.ForeignKey('decks.id'))
+    wishlist = db.Column(db.Boolean, default=False)
+    created_at = db.Column(db.DateTime, server_default = db.func.now())
+    updated_at = db.Column(db.DateTime, onupdate = db.func.now())
     
-#     users = db.relationship('User', backref='user_deck', cascade='all')
-#     decks = db.relationship('Deck', backref='user_deck', cascade='all')
+    users = db.relationship('User', back_populates='user_deck')
+    decks = db.relationship('Deck', back_populates='user_deck')
     
-#     serialize_only = ('id', 'user_id', 'deck_id', 'wishlist')
+    serialize_only = ('id', 'user_id', 'deck_id', 'wishlist')
     
-#     def __repr__(self):
-#         return f'<User deck id:{self.id}, user_id:{self.user_id}, deck_id:{self.deck_id}>'
+    def __repr__(self):
+        return f'<User deck id:{self.id}, user_id:{self.user_id}, deck_id:{self.deck_id}>'
     
-# class User_Spot(db.Model, SerializerMixin):
-#     __tablename__ = 'user_spots'
+class User_Spot(db.Model, SerializerMixin):
+    __tablename__ = 'user_spots'
     
-#     id = db.Column(db.Integer, primary_key=True)
-#     spots = db.Column(db.Integer, db.ForeignKey('spots.id'))
-#     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-#     created_at = db.Column(db.DateTime, server_default = db.func.now())
-#     updated_at = db.Column(db.DateTime, onupdate = db.func.now())
+    id = db.Column(db.Integer, primary_key=True)
+    spots = db.Column(db.Integer, db.ForeignKey('spots.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    created_at = db.Column(db.DateTime, server_default = db.func.now())
+    updated_at = db.Column(db.DateTime, onupdate = db.func.now())
     
-#     users = db.relationship('User', backref='user_spot', cascade='all')
-#     spots = db.relationship('Spot', backref='user_spot', cascade='all')
+    users = db.relationship('User', back_populates='user_spot')
+    spots = db.relationship('Spot', back_populates='user_spot')
     
-#     serialize_only = ('id', 'spots', 'user_id')
+    serialize_only = ('id', 'spots', 'user_id')
     
-#     def __repr__(self):
-#         return f'User Spots id:{self.id}, user_spots:{self.user_spots}, user_id:{self.user_id}>'
+    def __repr__(self):
+        return f'User Spots id:{self.id}, user_spots:{self.user_spots}, user_id:{self.user_id}>'
