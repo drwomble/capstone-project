@@ -29,6 +29,38 @@ class User(db.Model, SerializerMixin):
     updated_at = db.Column(db.DateTime, onupdate = db.func.now())
     
     def __repr__(self): 
-        return f'<User id:{self.id}, username:{self.username}, email:{self.email}'
+        return f'<User id:{self.id}, username:{self.username}, email:{self.email}>'
     
+class Spot(db.Model, SerializerMixin):
+    __tablename__ = 'spots'
     
+    id = db.Column(db.Integer, primary_key=True)
+    location = db.Column(db.String)
+    images = db.Column(db.String)
+    description = db.Column(db.String)
+    created_at = db.Column(db.DateTime, server_default = db.func.now())
+    updated_at = db.Column(db.DateTime, onupdate = db.func.now())
+    
+    def __repr__(self):
+        return f'<Spot id: {self.id}, location: {self.location}>'
+    
+class User_Deck(db.Model, SerializerMixin):
+    __tablename__ = 'user_decks'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    deck_id = db.Column(db.Integer, db.ForeignKey('decks.id'))
+    wishlist = db.Column(db.Boolean, default=False)
+    
+    def __repr__(self):
+        return f'<User deck id:{self.id}, user_id:{self.user_id}, deck_id:{self.deck_id}>'
+    
+class User_Spot(db.Model, SerializerMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    user_spots = db.Column(db.Integer, db.ForeignKey('spots.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    created_at = db.Column(db.DateTime, server_default = db.func.now())
+    updated_at = db.Column(db.DateTime, onupdate = db.func.now())
+    
+    def __repr__(self):
+        return f'User Spots id:{self.id}, user_spots:{self.user_spots}, user_id:{self.user_id}>'
