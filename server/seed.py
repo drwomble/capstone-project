@@ -4,14 +4,21 @@
 from random import randint, choice as rc
 
 # Remote library imports
-from faker import Faker
 
 # Local imports
 from app import app
-from models import db
+from models import db, Deck, Spot, User, User_Deck, User_Spot
+from werkzeug.security import generate_password_hash
 
 if __name__ == '__main__':
-    fake = Faker()
     with app.app_context():
-        print("Starting seed...")
-        # Seed code goes here!
+        print('Deleting current tables....')
+        Deck.query.delete()
+        User.query.delete()
+        Spot.query.delete()
+        User_Deck.query.delete()
+        User_Spot.query.delete()
+        print('Seeding data....')
+        
+        
+        

@@ -3,6 +3,8 @@ from config import db
 from sqlalchemy.orm import validates    
 from sqlalchemy import MetaData
 
+#TODO add validations
+
 class Deck(db.Model, SerializerMixin):
     __tablename__ = 'decks'
     
@@ -12,6 +14,10 @@ class Deck(db.Model, SerializerMixin):
     price = db.Column(db.Integer, nullable=False)
     created_at = db.Column(db.DateTime, server_default = db.func.now())
     updated_at = db.Column(db.DateTime, onupdate = db.func.now())
+    
+    users = db.relationship('User', back_populates='deck')
+    
+    serialize_only = ('id', 'brand', 'deck_name', 'price')
     
     def __repr__(self):
         return f'<Deck id:{self.id}, name:{self.deck_name}, price:{self.price}>'
@@ -28,6 +34,11 @@ class User(db.Model, SerializerMixin):
     created_at = db.Column(db.DateTime, server_default = db.func.now())
     updated_at = db.Column(db.DateTime, onupdate = db.func.now())
     
+    decks = db.relationship('Deck', back_populates='user')
+    spots = db.relationship('Spot', back_populates='user')
+    
+    serialize_only = ('id', 'username', 'email', '-password_hash', 'profile_picture', 'bio')
+    
     def __repr__(self): 
         return f'<User id:{self.id}, username:{self.username}, email:{self.email}>'
     
@@ -36,10 +47,14 @@ class Spot(db.Model, SerializerMixin):
     
     id = db.Column(db.Integer, primary_key=True)
     location = db.Column(db.String)
-    images = db.Column(db.String)
+    image = db.Column(db.String)
     description = db.Column(db.String)
     created_at = db.Column(db.DateTime, server_default = db.func.now())
     updated_at = db.Column(db.DateTime, onupdate = db.func.now())
+    
+    users = db.relationship('User', back_populates='spot')
+    
+    serialize_only = ('id', 'location', 'image', 'description')
     
     def __repr__(self):
         return f'<Spot id: {self.id}, location: {self.location}>'
@@ -51,16 +66,30 @@ class User_Deck(db.Model, SerializerMixin):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     deck_id = db.Column(db.Integer, db.ForeignKey('decks.id'))
     wishlist = db.Column(db.Boolean, default=False)
+    created_at = db.Column(db.DateTime, server_default = db.func.now())
+    updated_at = db.Column(db.DateTime, onupdate = db.func.now())
+    
+    users = db.relationship('User', back_populates='user_deck', cascade='all')
+    decks = db.relationship('Deck', back_populates='user_deck', cascade='all')
+    
+    serialize_only = ('id', 'user_id', 'deck_id', 'wishlist')
     
     def __repr__(self):
         return f'<User deck id:{self.id}, user_id:{self.user_id}, deck_id:{self.deck_id}>'
     
 class User_Spot(db.Model, SerializerMixin):
+    __tablename__ = 'user_spots'
+    
     id = db.Column(db.Integer, primary_key=True)
-    user_spots = db.Column(db.Integer, db.ForeignKey('spots.id'))
+    spots = db.Column(db.Integer, db.ForeignKey('spots.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     created_at = db.Column(db.DateTime, server_default = db.func.now())
     updated_at = db.Column(db.DateTime, onupdate = db.func.now())
+    
+    users = db.relationship('User', back_populates='user_spot', cascade='all')
+    spots = db.relationship('Spot', back_populates='user_spot', cascade='all')
+    
+    serialize_only = ('id', 'spots', 'user_id')
     
     def __repr__(self):
         return f'User Spots id:{self.id}, user_spots:{self.user_spots}, user_id:{self.user_id}>'
