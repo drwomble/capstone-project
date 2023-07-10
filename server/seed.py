@@ -9,6 +9,7 @@ from random import randint, choice as rc
 from app import app
 from models import Deck, User, Spot, User_Deck, User_Spot
 from werkzeug.security import generate_password_hash
+from config import db
 
 if __name__ == '__main__':
     with app.app_context():
@@ -25,6 +26,9 @@ if __name__ == '__main__':
         
         user_1 = User(username='test', email='test', password_hash=generate_password_hash('123', method='scrypt'), bio='test')
         
-        spot_1 = Spot(location= 'over there', image='https://mainlandskateandsurf.com/cdn/shop/products/girl-deck-bannerot-93-til-deck-teal_680x.png?v=1672354817', description='its a spot')
+        spot_1 = Spot(location='over there', image='https://mainlandskateandsurf.com/cdn/shop/products/girl-deck-bannerot-93-til-deck-teal_680x.png?v=1672354817', description='its a spot')
+        
+        db.session.add_all([deck_1, deck_2, user_1, spot_1])
+        db.session.commit()
         
         print('Done seeding data....')

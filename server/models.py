@@ -1,7 +1,8 @@
 from sqlalchemy_serializer import SerializerMixin
 from config import db
-from sqlalchemy.orm import validates    
+from sqlalchemy.orm import validates
 from sqlalchemy import MetaData
+from sqlalchemy.ext.associationproxy import association_proxy
 
 #TODO add validations
 
@@ -16,7 +17,8 @@ class Deck(db.Model, SerializerMixin):
     created_at = db.Column(db.DateTime, server_default = db.func.now())
     updated_at = db.Column(db.DateTime, onupdate = db.func.now())
     
-    user_decks = db.relationship('User_Deck', back_populates='decks')
+    user_decks = db.relationship('User_Deck', back_populates='deck')
+    # users_proxy = association_proxy("user_decks", "users")
     
     serialize_only = ('id', 'brand', 'deck_name', 'price', 'image')
     
@@ -35,8 +37,8 @@ class User(db.Model, SerializerMixin):
     created_at = db.Column(db.DateTime, server_default = db.func.now())
     updated_at = db.Column(db.DateTime, onupdate = db.func.now())
     
-    user_spots = db.relationship('User_Spot', back_populates='users')
-    user_decks = db.relationship('User_Deck', back_populates='users')
+    user_spots = db.relationship('User_Spot', back_populates='user')
+    user_decks = db.relationship('User_Deck', back_populates='user')
     # decks = db.relationship('Deck', back_populates='user')
     # spots = db.relationship('Spot', back_populates='user')
     
@@ -55,8 +57,9 @@ class Spot(db.Model, SerializerMixin):
     created_at = db.Column(db.DateTime, server_default = db.func.now())
     updated_at = db.Column(db.DateTime, onupdate = db.func.now())
     
-    # user_spots = db.relationship('User_Spot', back_populates='spot')
-    users = db.relationship('User', secondary='user_spots', back_populates='spot')
+    user_spots = db.relationship('User_Spot', back_populates='spot')
+    # users = db.relationship('User', secondary='user_spots', back_populates='spot')
+    users = association_proxy("user_spots", "user")
     
     serialize_only = ('id', 'location', 'image', 'description')
     
@@ -73,8 +76,8 @@ class User_Deck(db.Model, SerializerMixin):
     created_at = db.Column(db.DateTime, server_default = db.func.now())
     updated_at = db.Column(db.DateTime, onupdate = db.func.now())
     
-    users = db.relationship('User', back_populates='user_deck')
-    decks = db.relationship('Deck', back_populates='user_deck')
+    user = db.relationship('User', back_populates='user_decks')
+    deck = db.relationship('Deck', back_populates='user_decks')
     
     serialize_only = ('id', 'user_id', 'deck_id', 'wishlist')
     
@@ -90,8 +93,8 @@ class User_Spot(db.Model, SerializerMixin):
     created_at = db.Column(db.DateTime, server_default = db.func.now())
     updated_at = db.Column(db.DateTime, onupdate = db.func.now())
     
-    users = db.relationship('User', back_populates='user_spot')
-    spots = db.relationship('Spot', back_populates='user_spot')
+    user = db.relationship('User', back_populates='user_spots')
+    spot = db.relationship('Spot', back_populates='user_spots')
     
     serialize_only = ('id', 'spots', 'user_id')
     
