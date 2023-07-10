@@ -27,7 +27,44 @@ class Decks(Resource):
         try:
             deck_data = request.get_json().get('deck')
             deck = Deck(**deck_data)
-            
+            db.session.add(deck)
+            db.session.commit()
+            return make_response(jsonify(deck.to_dict()), 201)
+        except Exception as e:
+            return make_response({'error': [str(e)]}, 400)
+api.add_resource(Decks, '/decks')
+
+class DecksById(Resource):
+    def get(self, id):
+        try:
+            deck = Deck.query.get(id)
+            return make_response(deck.to_dict(), 200)
+        except Exception:
+            return make_response({'error': 'Deck not found'}, 404)
+        
+    def delete(self, id):
+        try:
+            deck = db.session.get(Deck, id)
+            db.session.delete(deck)
+            db.session.commit()
+            return make_response(jsonify({"Nothing to see here..."}), 204)
+        except Exception:
+            return make_response({'error': 'deck not found'}, 404)
+        
+    def patch(self, id):
+        deck_by_id = db.session.get(Deck, id)
+        if not deck_by_id:
+            return make_response({'error': 'deck not found'}, 404)
+        try:
+            deck_data = request.get_json().get('deck')
+            for key in deck_data:
+                setattr(deck_by_id, key, deck_data[key])
+            db.session.commit()
+            return make_response(deck_by_id.to_dict(), 200)
+        except Exception as e:
+            return make_response({"error": [str(e)]}, 400)
+api.add_resource(DecksById, '/decks/<int:id>')
+
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
