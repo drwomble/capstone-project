@@ -5,8 +5,9 @@
 # Remote library imports
 from flask import request, make_response, jsonify, session, abort, url_for, redirect
 from werkzeug.security import generate_password_hash, check_password_hash
-from models import *
+from models import User, Deck, Spot, User_Spot, User_Deck
 from flask_restful import Resource
+from functools import wraps
 
 # Local imports
 from config import app, db, api
@@ -15,6 +16,60 @@ from config import app, db, api
 @app.route('/')
 def home():
     return 'you made it home, good job'
+
+def decks_login_required(func):
+    @wraps(func)
+    def decorated_function(*args, **kwargs):
+        current_user = session.get('user_id')
+        deck_to_edit = db.session.get(User_Deck, kwargs)
+        if not session['user_id'] or current_user != deck_to_edit.user_id:
+            return make_response({'error': 'Unauthorized'}, 401)
+        return func(*args, **kwargs)
+    return decorated_function
+
+class SignUp(Resource):
+    def post(self):
+        username = request.get_json()['username']
+        email = request.get_json()['email']
+        password_hash = request.get_json()['password_hash']
+        profile_picture = request.get_json()['profile_picture']
+        bio = request.get_json()['bio']
+        
+        if User.query.filter_by(email= email). first():
+            return make_response({'Error': 'You already have an account. Try signing in.'})
+        
+        new_user = User(username=username, email=email, password_hash=generate_password_hash(password_hash, method='scrypt'), profile_picture=profile_picture, bio=bio)
+        
+        db.session.add(new_user)
+        db.session.commit()
+        
+        session['user_id'] = new_user.id
+        
+        return make_response('Account successfully created.', 201)
+
+api.add_resource(SignUp, '/signup')
+
+class SignIn(Resource):
+    def post(self):
+        email = request.get_json()['email']
+        password_hash = request.get_json()['password_hash']
+        
+        existing_user = User.query.filter_by(email=email).first()
+        
+        if not existing_user or not check_password_hash(existing_user.password_hash, password_hash):
+            return make_response('Email or password was incorrect. Please try again.', 404)
+        
+        session['user_id'] = existing_user.id
+        return make_response(existing_user.to_dict())
+    
+api.add_resource(SignIn, '/signin')
+
+class SignOut(Resource):
+    def delete(self):
+        session['user_id'] = None
+        return make_response({'message': '204: No Content'}, 204)
+    
+api.add_resource(SignOut, '/signout')
 
 class Decks(Resource):
     def get(self):
@@ -47,7 +102,7 @@ class DecksById(Resource):
             deck = db.session.get(Deck, id)
             db.session.delete(deck)
             db.session.commit()
-            return make_response(jsonify({"Nothing to see here..."}), 204)
+            return make_response(jsonify({}), 204)
         except Exception:
             return make_response({'error': 'deck not found'}, 404)
         
@@ -63,8 +118,57 @@ class DecksById(Resource):
             return make_response(deck_by_id.to_dict(), 200)
         except Exception as e:
             return make_response({"error": [str(e)]}, 400)
+        
 api.add_resource(DecksById, '/decks/<int:id>')
 
+class Spots(Resource):
+    def get(self):
+        spots = [spot.to_dict() for spot in Spot.query.all()]
+        return make_response(jsonify(spots), 200)
+    
+    def post(self):
+        try:
+            spot_data = request.get_json().get('spot')
+            spot = Spot(**spot_data)
+            db.session.add(spot)
+            db.session.commit()
+            return make_response(jsonify(spot.to_dict()), 201)
+        except Exception as e:
+            return make_response({'error': [str(e)]}, 400)
+            
+api.add_resource(Spots, '/spots')
 
+class SpotsById(Resource):
+    def get(self, id):
+        try:
+            spot = Spot.query.get(id)
+            return make_response(spot.to_dict(), 200)
+        except Exception:
+            return make_response({'error': 'Spot not found'}, 404)
+    
+    def delete(self, id):
+        try:
+            spot = db.session.get(Spot, id)
+            db.session.delete(spot)
+            db.session.commit()
+            return make_response(jsonify({"Nothing to see here..."}), 204)
+        except Exception:
+            return make_response({'error': 'Spot not found'}, 404)
+    
+    def patch(self, id):
+        spot_by_id = db.session.get(Spot, id)
+        if not spot_by_id:
+            return make_response({'error': 'Spot not found'}, 404)
+        try:
+            spot_data = request.get_json().get('spot')
+            for key in spot_data:
+                setattr(spot_by_id, key, spot_data[key])
+            db.session.commit()
+            return make_response(spot_by_id.to_dict(), 200)
+        except Exception as e:
+            return make_response({'error': [str(e)]}, 400)
+        
+api.add_resource(SpotsById, '/spots/<int:id>')
+    
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
