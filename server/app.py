@@ -71,6 +71,15 @@ class SignOut(Resource):
     
 api.add_resource(SignOut, '/signout')
 
+class CheckSession(Resource):
+    def get(self):
+        if user := User.query.filter(User.id == session.get('user_id')).first():
+            return user.to_dict()
+        else:
+            return make_response({'message': '401: Not Authorized'}, 401)
+        
+api.add_resource(CheckSession, '/checksession')
+
 class Decks(Resource):
     def get(self):
         decks = [deck.to_dict() for deck in Deck.query.all()]
