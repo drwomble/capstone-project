@@ -1,3 +1,5 @@
+//TODO change alerts to something better and add form validations
+
 import { useState } from "react"
 import { useHistory } from "react-router-dom"
 
@@ -20,7 +22,7 @@ const SignIn = ({ handleUser }) => {
             if(r.ok){
                 r.json().then(data => handleUser(data))
                 //change alert to text notif
-                alert('You have been signed in. Returning to home.')
+                alert('You have been signed in. Returning to home...')
                 history.push('/')
             } else {
                 //change alert to notif
