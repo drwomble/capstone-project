@@ -20,7 +20,7 @@ const Nav = ({ user }) => {
                     <Link to='/spots'>Spots</Link>
                 </li>
                 <li>
-                    <Link to={user ? '/signout' : '/singin'}>
+                    <Link to={user ? '/signout' : '/signin'}>
                         {user ? 'SignOut' : 'SignIn'}
                     </Link>
                 </li>

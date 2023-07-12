@@ -52,7 +52,7 @@ api.add_resource(SignUp, '/signup')
 class SignIn(Resource):
     def post(self):
         email = request.get_json()['email']
-        password_hash = request.get_json()['password_hash']
+        password_hash = request.get_json()['password']
         
         existing_user = User.query.filter_by(email=email).first()
         
