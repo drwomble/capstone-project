@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Switch, Route } from "react-router-dom";
+import Nav from "./Nav";
+import Decks from "./Decks";
+import Spots from "./Spots";
 
 function App() {
   const [decks, setDecks] = useState([])
@@ -27,6 +30,20 @@ function App() {
       }
     });
   }, []);
+
+  return (
+  <main>
+    <Nav user={user}/>
+    <Switch>
+      <Route exact path='/decks'>
+        <Decks decks={decks} />
+      </Route>
+      <Route exact path='spots'>
+        <Spots spots={spots} />
+      </Route>
+    </Switch>
+  </main>
+  )
 
 
 }
