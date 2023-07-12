@@ -179,6 +179,12 @@ class SpotsById(Resource):
         
 api.add_resource(SpotsById, '/spots/<int:id>')
 
+class Users(Resource):
+    def get(self):
+        users = [user.to_dict() for user in User.query.all()]
+        return make_response(jsonify(users), 200)
+
+api.add_resource(Users, '/users')
 class UsersById(Resource):
     def get(self, id):
         try:
@@ -209,6 +215,7 @@ class UsersById(Resource):
         except Exception:
             return make_response({'error': 'Account not found'}, 404)
         
-api.add_resource(UsersById, '/myprofile')
+api.add_resource(UsersById, '/users/<int:id>')
+
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

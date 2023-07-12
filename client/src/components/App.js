@@ -6,6 +6,8 @@ import Spots from "./Spots";
 import SignOut from "./SignOut";
 import SignIn from './SignIn';
 import SignUp from "./SignUp";
+import MyProfile from "./MyProfile";
+import Footer from "./Footer";
 
 
 function App() {
@@ -34,8 +36,14 @@ function App() {
       }
     });
   }, []);
-
+  
+  const editUserProfile = (editedUser) => {
+    setUser(editedUser)
+  } 
+  
   const handleUser = (currentUser) => setUser(currentUser)
+
+  // const userId = 
 
   return (
   <main>
@@ -47,6 +55,9 @@ function App() {
       <Route exact path='/spots'>
         <Spots spots={spots} />
       </Route>
+      <Route path='/users/:id'>
+        <MyProfile user={user} handleUser={handleUser}/>
+      </Route>
       <Route exact path='/signin'>
         <SignIn handleUser={handleUser} />
       </Route>
@@ -57,6 +68,7 @@ function App() {
         <SignOut handleUser={handleUser} />
       </Route>
     </Switch>
+    <Footer />
   </main>
   )
 

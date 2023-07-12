@@ -20,6 +20,9 @@ const Nav = ({ user }) => {
                     <Link to='/spots'>Spots</Link>
                 </li>
                 <li>
+                    <Link to='/users/:id'>My Profile</Link>
+                </li>
+                <li>
                     <Link to={user ? '/signout' : '/signin'}>
                         {user ? 'SignOut' : 'SignIn'}
                     </Link>
