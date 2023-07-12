@@ -54,6 +54,7 @@ class Spot(db.Model, SerializerMixin):
     location = db.Column(db.String)
     image = db.Column(db.String)
     description = db.Column(db.String)
+    name = db.Column(db.String)
     created_at = db.Column(db.DateTime, server_default = db.func.now())
     updated_at = db.Column(db.DateTime, onupdate = db.func.now())
     
@@ -61,7 +62,7 @@ class Spot(db.Model, SerializerMixin):
     # users = db.relationship('User', secondary='user_spots', back_populates='spot')
     users = association_proxy("user_spots", "user")
     
-    serialize_only = ('id', 'location', 'image', 'description')
+    serialize_only = ('id', 'location', 'image', 'description', 'name')
     
     def __repr__(self):
         return f'<Spot id: {self.id}, location: {self.location}>'

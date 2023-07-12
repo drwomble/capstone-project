@@ -30,9 +30,9 @@ if __name__ == '__main__':
         user_2 = User(username='test', email='test2', password_hash=generate_password_hash('123', method='scrypt'), bio='test')
         user_3 = User(username='test', email='test3', password_hash=generate_password_hash('123', method='scrypt'), bio='test')
         
-        spot_1 = Spot(location='over there', image='https://mainlandskateandsurf.com/cdn/shop/products/girl-deck-bannerot-93-til-deck-teal_680x.png?v=1672354817', description='its a spot')
-        spot_2 = Spot(location='over there', image='https://mainlandskateandsurf.com/cdn/shop/products/girl-deck-bannerot-93-til-deck-teal_680x.png?v=1672354817', description='its a spot')
-        spot_3 = Spot(location='over there', image='https://mainlandskateandsurf.com/cdn/shop/products/girl-deck-bannerot-93-til-deck-teal_680x.png?v=1672354817', description='its a spot')
+        spot_1 = Spot(location='over there', image='https://mainlandskateandsurf.com/cdn/shop/products/girl-deck-bannerot-93-til-deck-teal_680x.png?v=1672354817', description='its a spot', name='el toro')
+        spot_2 = Spot(location='over there', image='https://mainlandskateandsurf.com/cdn/shop/products/girl-deck-bannerot-93-til-deck-teal_680x.png?v=1672354817', description='its a spot', name= 'the spot')
+        spot_3 = Spot(location='over there', image='https://mainlandskateandsurf.com/cdn/shop/products/girl-deck-bannerot-93-til-deck-teal_680x.png?v=1672354817', description='its a spot', name='sponge stairs')
         
         db.session.add_all([deck_1, deck_2, deck_3, user_1, user_2, user_3, spot_1, spot_2, spot_3])
         db.session.commit()

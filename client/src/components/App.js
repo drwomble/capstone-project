@@ -3,6 +3,10 @@ import { Switch, Route } from "react-router-dom";
 import Nav from "./Nav";
 import Decks from "./Decks";
 import Spots from "./Spots";
+import SignOut from "./SignOut";
+import SignIn from './SignIn';
+import SignUp from "./SignUp";
+
 
 function App() {
   const [decks, setDecks] = useState([])
@@ -31,6 +35,8 @@ function App() {
     });
   }, []);
 
+  const handleUser = (currentUser) => setUser(currentUser)
+
   return (
   <main>
     <Nav user={user}/>
@@ -38,8 +44,17 @@ function App() {
       <Route exact path='/decks'>
         <Decks decks={decks} />
       </Route>
-      <Route exact path='spots'>
+      <Route exact path='/spots'>
         <Spots spots={spots} />
+      </Route>
+      <Route exact path='/signin'>
+        <SignIn handleUser={handleUser} />
+      </Route>
+      <Route exact path='/signup'>
+        <SignUp handleUser={handleUser} />
+      </Route>
+      <Route exact path='/signout'>
+        <SignOut handleUser={handleUser} />
       </Route>
     </Switch>
   </main>
