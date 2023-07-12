@@ -24,6 +24,9 @@ const Nav = ({ user }) => {
                         {user ? 'SignOut' : 'SignIn'}
                     </Link>
                 </li>
+                <li>
+                    <Link to='/signup'>SignUp</Link>
+                </li>
             </ul>
         </nav>
     )
