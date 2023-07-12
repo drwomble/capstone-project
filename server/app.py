@@ -120,7 +120,7 @@ class DecksById(Resource):
         if not deck_by_id:
             return make_response({'error': 'deck not found'}, 404)
         try:
-            deck_data = request.get_json().get('deck')
+            deck_data = request.get_json()
             for key in deck_data:
                 setattr(deck_by_id, key, deck_data[key])
             db.session.commit()
@@ -169,7 +169,7 @@ class SpotsById(Resource):
         if not spot_by_id:
             return make_response({'error': 'Spot not found'}, 404)
         try:
-            spot_data = request.get_json().get('spot')
+            spot_data = request.get_json()
             for key in spot_data:
                 setattr(spot_by_id, key, spot_data[key])
             db.session.commit()
@@ -178,6 +178,37 @@ class SpotsById(Resource):
             return make_response({'error': [str(e)]}, 400)
         
 api.add_resource(SpotsById, '/spots/<int:id>')
+
+class UsersById(Resource):
+    def get(self, id):
+        try:
+            user = User.query.get(id)
+            return make_response(user.to_dict(), 200)
+        except Exception:
+            return make_response({'error': 'Account not found'}, 404)
+        
+    def patch(self, id):
+        user_by_id = db.session.get(User, id)
+        if not user_by_id:
+            return make_response({'error': 'Account not found'})
+        try:
+            user_data = request.get_json()
+            for key in user_data:
+                setattr(user_by_id, key, user_data[key])
+            db.session.commit()
+            return make_response(user_by_id.to_dict(), 200)
+        except Exception as e:
+            return make_response({'error': [str(e)]}, 400)
     
+    def delete(self, id):
+        try:
+            user = db.session.get(User, id)
+            db.session.delete(user)
+            db.session.commit()
+            return make_response({}, 204)
+        except Exception:
+            return make_response({'error': 'Account not found'}, 404)
+        
+api.add_resource(UsersById, '/myprofile')
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
