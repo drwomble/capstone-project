@@ -9,7 +9,9 @@ const Nav = ({ user }) => {
     return (
         <nav>
             <Link to='/'>
-                <img alt='logo goes here'/>
+                {/* TODO add logo in when styling and  */}
+                {/* src='Logo.png' */}
+                <img alt='logo goes here' />
                 <span>Skate Exchange</span>
             </Link>
             <ul>
