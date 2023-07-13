@@ -85,7 +85,7 @@ class Decks(Resource):
         decks = [deck.to_dict() for deck in Deck.query.all()]
         return make_response(jsonify(decks), 200)
     
-    @decks_login_required
+    # @decks_login_required
     def post(self):
         if not session['user_id']:
             return make_response({'error': 'Unauthorized'}, 401)
@@ -94,9 +94,15 @@ class Decks(Resource):
             deck = Deck(**deck_data)
             db.session.add(deck)
             db.session.commit()
+            user_deck = User_Deck()
+            user_deck.user_id = session.get('user_id')
+            user_deck.deck_id = deck.id
+            db.session.add(user_deck)
+            db.session.commit()
             return make_response(jsonify(deck.to_dict()), 201)
         except Exception as e:
             return make_response({'error': [str(e)]}, 400)
+
 api.add_resource(Decks, '/decks')
 
 class DecksById(Resource):

@@ -10,6 +10,7 @@ import MyProfile from "./MyProfile";
 import Footer from "./Footer";
 import EditProfile from "./EditProfile";
 import NewDeck from "./NewDeck";
+import NewSpot from "./NewSpot";
 
 
 function App() {
@@ -43,6 +44,8 @@ function App() {
 
   const addDeck = (newDeck) => setDecks([...decks, newDeck]) 
 
+  const addSpot = (newSpot) => setSpots([...spots, newSpot])
+
   return (
   <main>
     <Nav user={user}/>
@@ -61,6 +64,9 @@ function App() {
       </Route>
       <Route path='/decks/new'>
         <NewDeck addDeck={addDeck} />
+      </Route>
+      <Route path='/spots/new' >
+        <NewSpot addSpot={addSpot} />
       </Route>
       <Route exact path='/signin'>
         <SignIn handleUser={handleUser} />

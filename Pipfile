@@ -12,6 +12,7 @@ flask-restful = "*"
 flask-cors = "*"
 flask-dotenv = "*"
 python-dotenv = "*"
+ipdb = "*"
 
 [dev-packages]
 

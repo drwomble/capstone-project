@@ -23,6 +23,9 @@ const Nav = ({ user }) => {
                     <Link to='/decks/new'>New Listing</Link>
                 </li>
                 <li>
+                    <Link to='spots/new'>New Spot</Link>
+                </li>
+                <li>
                     <Link to='/users/:id'>My Profile</Link>
                 </li>
                 <li>
