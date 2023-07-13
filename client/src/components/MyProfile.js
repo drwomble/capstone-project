@@ -6,6 +6,12 @@ const MyProfile = ({ user, handleUser }) => {
     const [toggleForm, setToggleEditForm] = useState(false)
 
     const handleToggle = () => setToggleEditForm(current => !current)
+    // debugger
+    useEffect(() => {
+        fetch(`/users/${user.id}`)
+        .then((r) => r.json())
+        // .then((data) => handleUser(data))
+    }, [])
     return (
         <div>
             <h1>{user.username}</h1>
