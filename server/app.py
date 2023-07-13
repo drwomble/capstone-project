@@ -148,6 +148,11 @@ class Spots(Resource):
             spot = Spot(**spot_data)
             db.session.add(spot)
             db.session.commit()
+            user_spot = User_Spot()
+            user_spot.user_id = session.get('user_id')
+            user_spot.spots = spot.id
+            db.session.add(user_spot)
+            db.session.commit()
             return make_response(jsonify(spot.to_dict()), 201)
         except Exception as e:
             return make_response({'error': [str(e)]}, 400)
