@@ -8,12 +8,14 @@ import SignIn from './SignIn';
 import SignUp from "./SignUp";
 import MyProfile from "./MyProfile";
 import Footer from "./Footer";
+import EditProfile from "./EditProfile";
+import NewDeck from "./NewDeck";
 
 
 function App() {
   const [decks, setDecks] = useState([])
   const [spots, setSpots] = useState([])
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState({})
 
   useEffect(() => {
     fetch('/decks')
@@ -32,18 +34,14 @@ function App() {
       if (r.ok) {
         r.json().then((user) => setUser(user))
       } else {
-        setUser(null)
+        setUser({})
       }
     });
   }, []);
-  
-  const editUserProfile = (editedUser) => {
-    setUser(editedUser)
-  } 
-  
+
   const handleUser = (currentUser) => setUser(currentUser)
 
-  // const userId = 
+  const addDeck = (newDeck) => setDecks([...decks, newDeck]) 
 
   return (
   <main>
@@ -57,6 +55,12 @@ function App() {
       </Route>
       <Route path='/users/:id'>
         <MyProfile user={user} handleUser={handleUser}/>
+      </Route>
+      <Route path='/users/edit/:id'>
+        <EditProfile user={user} handleUser={handleUser}/>
+      </Route>
+      <Route path='/decks/new'>
+        <NewDeck addDeck={addDeck} />
       </Route>
       <Route exact path='/signin'>
         <SignIn handleUser={handleUser} />

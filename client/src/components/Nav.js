@@ -20,6 +20,9 @@ const Nav = ({ user }) => {
                     <Link to='/spots'>Spots</Link>
                 </li>
                 <li>
+                    <Link to='/decks/new'>New Listing</Link>
+                </li>
+                <li>
                     <Link to='/users/:id'>My Profile</Link>
                 </li>
                 <li>

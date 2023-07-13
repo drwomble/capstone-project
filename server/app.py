@@ -45,7 +45,7 @@ class SignUp(Resource):
         
         session['user_id'] = new_user.id
         
-        return make_response('Account successfully created.', 201)
+        return make_response(jsonify('Account successfully created.'), 201)
 
 api.add_resource(SignUp, '/signup')
 
