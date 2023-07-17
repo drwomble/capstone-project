@@ -47,12 +47,6 @@ function App() {
 
   const addSpot = (newSpot) => setSpots([...spots, newSpot])
 
-  const handleSpotEdit = () => null
-
-  const handleSpotDelete = (spotToDelete) => {
-    setSpots(spots => spots.filter((spot) => spot.id !== spotToDelete.id))
-  }
-
   const handleDeckDelete = (deckToDelete) => {
     setDecks(decks => decks.filter((deck) => deck.id !== deckToDelete.id))
   }
@@ -73,10 +67,10 @@ function App() {
     <Nav user={user}/>
     <Switch>
       <Route exact path='/decks'>
-        <Decks decks={decks} handleDeckEdit={handleDeckEdit} />
+        <Decks decks={decks} handleDeckEdit={handleDeckEdit} handleDeckDelete={handleDeckDelete}/>
       </Route>
       <Route exact path='/spots'>
-        <Spots spots={spots} handleSpotDelete={handleSpotDelete} handleSpotEdit={handleSpotEdit}/>
+        <Spots spots={spots} />
       </Route>
       <Route path='/users/:id'>
         <MyProfile user={user} handleUser={handleUser}/>
@@ -94,7 +88,7 @@ function App() {
         <EditDeck handleDeckEdit={handleDeckEdit} />
       </Route>
       <Route path='spots/edit/:id'>
-        <EditSpot handleSpotEdit={handleSpotEdit} />
+        <EditSpot />
       </Route>
       <Route exact path='/signin'>
         <SignIn handleUser={handleUser} />

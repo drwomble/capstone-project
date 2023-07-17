@@ -1,13 +1,27 @@
 import EditDeck from "./EditDeck"
 import { useState } from "react"
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min"
 
 //TODO Buttons need to conditionally render
-const DeckCard = ({ deck, handleDeckEdit }) => {
+const DeckCard = ({ deck, handleDeckEdit, handleDeckDelete }) => {
     const [editToggle, setEditToggle] = useState(false)
+    const history = useHistory()
 
     const handleEditToggle = () => setEditToggle(current => !current)
 
-    const handleDelete = () => null
+    const handleDelete = () => {
+        fetch(`/decks/${deck.id}`, {
+            method: 'DELETE',
+        }).then((r) => {
+            if(r.ok){
+                handleDeckDelete(r)
+                alert('Listing deleted.')
+                history.push('/decks')
+            } else {
+                alert('Something went wrong. Please try again.')
+            }
+        })
+    }
 
     return(
         <div>

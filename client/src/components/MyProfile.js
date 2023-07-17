@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom/cjs/react-router-dom.min"
 
 const MyProfile = ({ user, handleUser }) => {
     const [toggleForm, setToggleEditForm] = useState(false)
-    const history = useHistory()
+    // const history = useHistory()
 
     const handleToggle = () => setToggleEditForm(current => !current)
     
@@ -14,7 +14,7 @@ const MyProfile = ({ user, handleUser }) => {
         .then((r) => r.json())
         // .then((data) => handleUser(data))
     }, [])
-    
+
     return (
         <div>
             <h1>{user.username}</h1>
