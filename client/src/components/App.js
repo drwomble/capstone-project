@@ -11,6 +11,8 @@ import Footer from "./Footer";
 import EditProfile from "./EditProfile";
 import NewDeck from "./NewDeck";
 import NewSpot from "./NewSpot";
+import MyListings from "./MyListings";
+import MySpots from "./MySpots";
 
 
 function App() {
@@ -64,6 +66,12 @@ function App() {
       </Route>
       <Route path='/decks/new'>
         <NewDeck addDeck={addDeck} />
+      </Route>
+      <Route path='/my-listings' >
+        <MyListings addDeck={addDeck} />
+      </Route>
+      <Route path='/my-spots' >
+        <MySpots addSpot={addSpot} />
       </Route>
       <Route path='/spots/new' >
         <NewSpot addSpot={addSpot} />

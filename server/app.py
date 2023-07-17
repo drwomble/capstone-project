@@ -229,5 +229,18 @@ class UsersById(Resource):
         
 api.add_resource(UsersById, '/users/<int:id>')
 
+class UserSpots(Resource):
+    def get(self, id):
+        user_spots = db.session.get('user_id')
+        try:
+            for spots in Spot:
+                if user_spots == User_Spot.user_id:
+                    spots = Spot.query.get(id)
+                    return make_response(spots.to_dict(), 200)
+        except Exception:
+            return make_response({'error': 'No spots found for your account'})
+
+api.add_resource(UserSpots, '/my-spots/<int:id>')
+
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

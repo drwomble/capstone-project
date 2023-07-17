@@ -4,7 +4,21 @@ import { Link } from 'react-router-dom'
 const Nav = ({ user }) => {
     // const [toggleButton, setToggleButton] = useState(false)
 
-    // const handleToggle = () => setToggleButton(current => !current)
+    const handleToggle = () => {
+        return (
+        <div>
+            <li>
+                <Link to='/my-listings'>My Listings</Link>
+            </li>
+            <li>
+                <Link to='/my-spots'>My Spots</Link>
+            </li>
+            <li>
+                <Link to='/users/:id'>My Profile</Link>
+            </li>
+        </div>
+        )
+    }
 
     return (
         <nav>
@@ -25,11 +39,9 @@ const Nav = ({ user }) => {
                     <Link to='/decks/new'>New Listing</Link>
                 </li>
                 <li>
-                    <Link to='spots/new'>New Spot</Link>
+                    <Link to='/spots/new'>New Spot</Link>
                 </li>
-                <li>
-                    <Link to='/users/:id'>My Profile</Link>
-                </li>
+                {user ? handleToggle() : null}
                 <li>
                     <Link to={user ? '/signout' : '/signin'}>
                         {user ? 'SignOut' : 'SignIn'}
