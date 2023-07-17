@@ -11,6 +11,8 @@ import Footer from "./Footer";
 import EditProfile from "./EditProfile";
 import NewDeck from "./NewDeck";
 import NewSpot from "./NewSpot";
+import EditDeck from "./EditDeck";
+import EditSpot from "./EditSpot";
 
 function App() {
   const [decks, setDecks] = useState([])
@@ -45,15 +47,36 @@ function App() {
 
   const addSpot = (newSpot) => setSpots([...spots, newSpot])
 
+  const handleSpotEdit = () => null
+
+  const handleSpotDelete = (spotToDelete) => {
+    setSpots(spots => spots.filter((spot) => spot.id !== spotToDelete.id))
+  }
+
+  const handleDeckDelete = (deckToDelete) => {
+    setDecks(decks => decks.filter((deck) => deck.id !== deckToDelete.id))
+  }
+  
+  const handleDeckEdit = (updatedDeck) => {
+    const updatedDecks = decks.map((deck) => {
+      if (deck.id === updatedDeck.id){
+        return updatedDeck
+      } else {
+        return deck 
+      }
+    });
+    setDecks(updatedDecks)
+  }
+
   return (
   <main>
     <Nav user={user}/>
     <Switch>
       <Route exact path='/decks'>
-        <Decks decks={decks} />
+        <Decks decks={decks} handleDeckEdit={handleDeckEdit} />
       </Route>
       <Route exact path='/spots'>
-        <Spots spots={spots} />
+        <Spots spots={spots} handleSpotDelete={handleSpotDelete} handleSpotEdit={handleSpotEdit}/>
       </Route>
       <Route path='/users/:id'>
         <MyProfile user={user} handleUser={handleUser}/>
@@ -66,6 +89,12 @@ function App() {
       </Route>
       <Route path='/spots/new' >
         <NewSpot addSpot={addSpot} user={user} decks={decks} />
+      </Route>
+      <Route path='decks/edit/:id'>
+        <EditDeck handleDeckEdit={handleDeckEdit} />
+      </Route>
+      <Route path='spots/edit/:id'>
+        <EditSpot handleSpotEdit={handleSpotEdit} />
       </Route>
       <Route exact path='/signin'>
         <SignIn handleUser={handleUser} />

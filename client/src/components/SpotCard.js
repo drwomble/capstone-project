@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min'
 
-const SpotCard = ({spot, userSpots}) => {
+const SpotCard = ({spot, userSpots, handleSpotEdit, handleSpotDelete}) => {
     // const [toggle, setToggle] = useState(false)
 
     // const handleEdit = () => {
@@ -13,6 +13,7 @@ const SpotCard = ({spot, userSpots}) => {
     //     }
     //     // debugger
     // }
+    
 
     return(
         <div>
@@ -20,8 +21,8 @@ const SpotCard = ({spot, userSpots}) => {
             <span>{spot.location}</span>
             <img src={spot.image} alt='picture of spot' />
             <span>{spot.description}</span>
-            <button onClick={handleEdit} >Edit Spot</button>
-            <button onClick={handleDelete} >Delete Spot</button>
+            <button onClick={() => handleSpotEdit()} >Edit Spot</button>
+            <button onClick={() => handleSpotDelete()} >Delete Spot</button>
         </div>
     )
 }

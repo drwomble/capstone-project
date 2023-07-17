@@ -2,7 +2,14 @@ import { Link } from 'react-router-dom'
 // import { useState } from 'react'
 
 const Nav = ({ user }) => {
-
+    // const [toggleButton, setToggleButton] = useState(false)
+    const handleMyProfile = () => {
+        return (
+            <li>
+                <Link to={`/users/${user.id}`}>My Profile</Link>
+            </li>
+        )
+    }
     return (
         <nav>
             <Link to='/'>
@@ -24,6 +31,7 @@ const Nav = ({ user }) => {
                 <li>
                     <Link to='/spots/new'>New Spot</Link>
                 </li>
+                {user ? handleMyProfile() : null}
                 <li>
                     <Link to={user ? '/signout' : '/signin'}>
                         {user ? 'SignOut' : 'SignIn'}

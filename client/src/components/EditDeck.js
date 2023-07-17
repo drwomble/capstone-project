@@ -3,9 +3,9 @@ import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { ErrorMessage, useFormik } from 'formik';
 import * as yup from 'yup';
 
-const NewDeck = ({ addDeck }) => {
-    const [errors, setErrors] = useState([])
+const EditDeck = ({handleDeckEdit, deck, handleEditToggle}) => {
     const history = useHistory()
+    const [errors, setErrors] = useState([])
 
     const deckSchema = yup.object().shape({
         brand: yup
@@ -25,20 +25,18 @@ const NewDeck = ({ addDeck }) => {
         .required('Price is required'),
         image: yup.string().required('Picture is required')
     })
-
-    
     const formik = useFormik({
         initialValues: {
-            brand: '',
-            deck_name: '',
-            price: '',
-            image: ''
+            brand: deck.brand,
+            deck_name: deck.deck_name,
+            price: deck.price,
+            image: deck.image
         },
         validationSchema: deckSchema,
         onSubmit: (values, { resetForm }) => {
             const {brand, deck_name, price, image} = values;
-            fetch('/decks', {
-                method: 'POST',
+            fetch(`/decks/${deck.id}`, {
+                method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -47,9 +45,10 @@ const NewDeck = ({ addDeck }) => {
             .then((r) => {
                 if (r.ok) {
                     r.json().then((data) => {
-                        addDeck(data)
+                        handleDeckEdit(data)
                         resetForm({values: ''})
                         history.push('/decks')
+                        handleEditToggle()
                     })
                 } else {
                     r.json().then((errors) => setErrors(errors.message))
@@ -58,7 +57,6 @@ const NewDeck = ({ addDeck }) => {
             .catch((errors) => console.log(errors))
         }
     })
-
     return (
         <div>
             <form onSubmit={formik.handleSubmit}>
@@ -79,5 +77,4 @@ const NewDeck = ({ addDeck }) => {
         </div>
     )
 }
-
-export default NewDeck
+export default EditDeck
