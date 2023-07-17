@@ -11,9 +11,6 @@ import Footer from "./Footer";
 import EditProfile from "./EditProfile";
 import NewDeck from "./NewDeck";
 import NewSpot from "./NewSpot";
-import MyListings from "./MyListings";
-import MySpots from "./MySpots";
-
 
 function App() {
   const [decks, setDecks] = useState([])
@@ -67,14 +64,8 @@ function App() {
       <Route path='/decks/new'>
         <NewDeck addDeck={addDeck} />
       </Route>
-      <Route path='/my-listings' >
-        <MyListings addDeck={addDeck} />
-      </Route>
-      <Route path='/my-spots' >
-        <MySpots addSpot={addSpot} />
-      </Route>
       <Route path='/spots/new' >
-        <NewSpot addSpot={addSpot} />
+        <NewSpot addSpot={addSpot} user={user} decks={decks} />
       </Route>
       <Route exact path='/signin'>
         <SignIn handleUser={handleUser} />
