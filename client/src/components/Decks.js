@@ -1,8 +1,11 @@
 import DeckCard from './DeckCard'
+import { useContext } from 'react'
+import { DeckContext } from './deckContext'
 
-const Decks = ({ decks, handleDeckEdit, handleDeckDelete }) => {
+const Decks = () => {
+    const {decks} = useContext(DeckContext)
 
-    const mappedDecks = decks.map((deck => <DeckCard key={deck.id} deck={deck} handleDeckEdit={handleDeckEdit} handleDeckDelete={handleDeckDelete} />))
+    const mappedDecks = decks.map((deck => <DeckCard key={deck.id} deck={deck} />))
 
     return (
         <div>

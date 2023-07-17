@@ -12,7 +12,7 @@ const MyProfile = ({ user, handleUser }) => {
     useEffect(() => {
         fetch(`/users/${user.id}`)
         .then((r) => r.json())
-        // .then((data) => handleUser(data))
+        .then((data) => handleUser(data))
     }, [])
 
     return (

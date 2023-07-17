@@ -15,15 +15,8 @@ import EditDeck from "./EditDeck";
 import EditSpot from "./EditSpot";
 
 function App() {
-  const [decks, setDecks] = useState([])
   const [spots, setSpots] = useState([])
-  const [user, setUser] = useState({})
-
-  useEffect(() => {
-    fetch('/decks')
-    .then(r => r.json())
-    .then(data => setDecks(data))
-  }, [])
+  const [user, setUser] = useState(null)
 
   useEffect(() => {
     fetch('/spots')
@@ -36,38 +29,21 @@ function App() {
       if (r.ok) {
         r.json().then((user) => setUser(user))
       } else {
-        setUser({})
+        setUser(null)
       }
     });
   }, []);
 
-  const handleUser = (currentUser) => setUser(currentUser)
-
-  const addDeck = (newDeck) => setDecks([...decks, newDeck]) 
+  const handleUser = (currentUser) => setUser(currentUser) 
 
   const addSpot = (newSpot) => setSpots([...spots, newSpot])
-
-  const handleDeckDelete = (deckToDelete) => {
-    setDecks(decks => decks.filter((deck) => deck.id !== deckToDelete.id))
-  }
-  
-  const handleDeckEdit = (updatedDeck) => {
-    const updatedDecks = decks.map((deck) => {
-      if (deck.id === updatedDeck.id){
-        return updatedDeck
-      } else {
-        return deck 
-      }
-    });
-    setDecks(updatedDecks)
-  }
 
   return (
   <main>
     <Nav user={user}/>
     <Switch>
       <Route exact path='/decks'>
-        <Decks decks={decks} handleDeckEdit={handleDeckEdit} handleDeckDelete={handleDeckDelete}/>
+        <Decks />
       </Route>
       <Route exact path='/spots'>
         <Spots spots={spots} />
@@ -79,13 +55,13 @@ function App() {
         <EditProfile user={user} handleUser={handleUser}/>
       </Route>
       <Route path='/decks/new'>
-        <NewDeck addDeck={addDeck} />
+        <NewDeck />
       </Route>
       <Route path='/spots/new' >
-        <NewSpot addSpot={addSpot} user={user} decks={decks} />
+        <NewSpot addSpot={addSpot} user={user} />
       </Route>
       <Route path='decks/edit/:id'>
-        <EditDeck handleDeckEdit={handleDeckEdit} />
+        <EditDeck />
       </Route>
       <Route path='spots/edit/:id'>
         <EditSpot />

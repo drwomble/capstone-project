@@ -21,7 +21,7 @@ def decks_login_required(func):
     @wraps(func)
     def decorated_function(*args, **kwargs):
         current_user = session.get('user_id')
-        deck_to_edit = session.get(User_Deck, kwargs)
+        deck_to_edit = db.session.get(User_Deck, kwargs)
         import ipdb; ipdb.set_trace()
         if not session['user_id'] or current_user != deck_to_edit:
             return make_response({'error': 'Unauthorized'}, 401)
@@ -113,18 +113,19 @@ class DecksById(Resource):
             return make_response(deck.to_dict(), 200)
         except Exception:
             return make_response({'error': 'Deck not found'}, 404)
-        
-    @decks_login_required
+    
     def delete(self, id):
+        # deck_user_id = db.session.get(User_Deck, id)
         try:
             deck = db.session.get(Deck, id)
+            # import ipdb; ipdb.set_trace()
             db.session.delete(deck)
             db.session.commit()
             return make_response(jsonify({}), 204)
         except Exception:
             return make_response({'error': 'deck not found'}, 404)
         
-    @decks_login_required
+    # @decks_login_required
     def patch(self, id):
         deck_by_id = db.session.get(Deck, id)
         if not deck_by_id:

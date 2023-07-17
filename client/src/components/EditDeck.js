@@ -1,11 +1,13 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { ErrorMessage, useFormik } from 'formik';
 import * as yup from 'yup';
+import { DeckContext } from "./deckContext";
 
-const EditDeck = ({handleDeckEdit, deck, handleEditToggle}) => {
+const EditDeck = ({ deck, handleEditToggle}) => {
     const history = useHistory()
     const [errors, setErrors] = useState([])
+    const {handleDeckEdit} = useContext(DeckContext)
 
     const deckSchema = yup.object().shape({
         brand: yup

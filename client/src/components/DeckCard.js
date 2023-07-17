@@ -1,11 +1,13 @@
 import EditDeck from "./EditDeck"
-import { useState } from "react"
+import { useState, useContext } from "react"
+import { DeckContext } from "./deckContext"
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min"
 
 //TODO Buttons need to conditionally render
-const DeckCard = ({ deck, handleDeckEdit, handleDeckDelete }) => {
+const DeckCard = ({ deck }) => {
     const [editToggle, setEditToggle] = useState(false)
     const history = useHistory()
+    const {handleDeckDelete} = useContext(DeckContext)
 
     const handleEditToggle = () => setEditToggle(current => !current)
 
@@ -30,7 +32,7 @@ const DeckCard = ({ deck, handleDeckEdit, handleDeckDelete }) => {
             <img src={deck.image} alt='picture of deck' />
             <span>{deck.price}</span>
             <button onClick={handleEditToggle}>Edit Listing</button>
-            <div>{editToggle ? <EditDeck key={deck.id} deck={deck} handleDeckEdit={handleDeckEdit} handleEditToggle={handleEditToggle}/> : null}</div>
+            <div>{editToggle ? <EditDeck key={deck.id} deck={deck} handleEditToggle={handleEditToggle}/> : null}</div>
             <button onClick={handleDelete}>Delete Listing</button>
         </div>
     )
