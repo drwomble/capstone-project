@@ -1,6 +1,6 @@
 import DeckCard from './DeckCard'
 import { useContext } from 'react'
-import { DeckContext } from './deckContext'
+import { DeckContext } from './context/deckContext'
 
 const Decks = () => {
     const {decks} = useContext(DeckContext)

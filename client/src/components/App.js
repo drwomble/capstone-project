@@ -12,7 +12,6 @@ import EditProfile from "./EditProfile";
 import NewDeck from "./NewDeck";
 import NewSpot from "./NewSpot";
 import EditDeck from "./EditDeck";
-import EditSpot from "./EditSpot";
 
 function App() {
   const [spots, setSpots] = useState([])
@@ -62,9 +61,6 @@ function App() {
       </Route>
       <Route path='decks/edit/:id'>
         <EditDeck />
-      </Route>
-      <Route path='spots/edit/:id'>
-        <EditSpot />
       </Route>
       <Route exact path='/signin'>
         <SignIn handleUser={handleUser} />
