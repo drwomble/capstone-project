@@ -4,7 +4,7 @@ import { DeckContext } from "./context/deckContext"
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min"
 
 //TODO Buttons need to conditionally render
-const DeckCard = ({ deck }) => {
+const DeckCard = ({ deck, user }) => {
     const [editToggle, setEditToggle] = useState(false)
     const history = useHistory()
     const {handleDeckDelete} = useContext(DeckContext)
@@ -18,11 +18,25 @@ const DeckCard = ({ deck }) => {
             if(r.ok){
                 handleDeckDelete(r)
                 alert('Listing deleted.')
-                history.push('/decks')
+                history.push('/')
             } else {
                 alert('Something went wrong. Please try again.')
             }
         })
+    }
+
+    const handleDisplayButtons = () => {
+        if (user.id === deck.user_id){
+            return (
+                <div>
+                    <button onClick={handleEditToggle}>Edit Listing</button>
+                    <div>{editToggle ? <EditDeck key={deck.id} deck={deck} handleEditToggle={handleEditToggle}/> : null}</div>
+                    <button onClick={handleDelete}>Delete Listing</button>
+                </div>
+            )
+        } else {
+            return null
+        }
     }
 
     return(
@@ -31,9 +45,7 @@ const DeckCard = ({ deck }) => {
             <span>{deck.brand}</span>
             <img src={deck.image} alt='picture of deck' />
             <span>{deck.price}</span>
-            <button onClick={handleEditToggle}>Edit Listing</button>
-            <div>{editToggle ? <EditDeck key={deck.id} deck={deck} handleEditToggle={handleEditToggle}/> : null}</div>
-            <button onClick={handleDelete}>Delete Listing</button>
+            {user ? handleDisplayButtons() : null}
         </div>
     )
 }

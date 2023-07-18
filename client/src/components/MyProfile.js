@@ -1,6 +1,6 @@
 import EditProfile from "./EditProfile"
 import { useState, useEffect } from "react"
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min"
+// import { useHistory } from "react-router-dom/cjs/react-router-dom.min"
 
 const MyProfile = ({ user, handleUser }) => {
     const [toggleForm, setToggleEditForm] = useState(false)

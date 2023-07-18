@@ -42,7 +42,7 @@ function App() {
     <Nav user={user}/>
     <Switch>
       <Route exact path='/decks'>
-        <Decks />
+        <Decks user={user} />
       </Route>
       <Route exact path='/spots'>
         <Spots spots={spots} />

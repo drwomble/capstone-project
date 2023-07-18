@@ -21,7 +21,7 @@ class Deck(db.Model, SerializerMixin):
     user = db.relationship('User', back_populates='deck')
     
     
-    serialize_only = ('id', 'brand', 'deck_name', 'price', 'image')
+    serialize_only = ('id', 'brand', 'deck_name', 'price', 'image', 'user_id')
     
     def __repr__(self):
         return f'<Deck id:{self.id}, name:{self.deck_name}, price:{self.price}>'
@@ -61,7 +61,7 @@ class Spot(db.Model, SerializerMixin):
     
     user = db.relationship('User', back_populates='spot')
     
-    serialize_only = ('id', 'location', 'image', 'description', 'name')
+    serialize_only = ('id', 'location', 'image', 'description', 'name', 'user_id')
     
     def __repr__(self):
         return f'<Spot id: {self.id}, location: {self.location}>'
