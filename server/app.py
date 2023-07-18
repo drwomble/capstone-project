@@ -5,7 +5,7 @@
 # Remote library imports
 from flask import request, make_response, jsonify, session, abort, url_for, redirect
 from werkzeug.security import generate_password_hash, check_password_hash
-from models import User, Deck, Spot, User_Spot, User_Deck
+from models import User, Deck, Spot
 from flask_restful import Resource
 from functools import wraps
 
@@ -17,16 +17,16 @@ from config import app, db, api
 def home():
     return 'you made it home, good job'
 
-def decks_login_required(func):
-    @wraps(func)
-    def decorated_function(*args, **kwargs):
-        current_user = session.get('user_id')
-        deck_to_edit = db.session.get(User_Deck, kwargs)
-        import ipdb; ipdb.set_trace()
-        if not session['user_id'] or current_user != deck_to_edit:
-            return make_response({'error': 'Unauthorized'}, 401)
-        return func(*args, **kwargs)
-    return decorated_function
+# def decks_login_required(func):
+#     @wraps(func)
+#     def decorated_function(*args, **kwargs):
+#         current_user = session.get('user_id')
+#         deck_to_edit = db.session.get(User_Deck, kwargs)
+#         import ipdb; ipdb.set_trace()
+#         if not session['user_id'] or current_user != deck_to_edit:
+#             return make_response({'error': 'Unauthorized'}, 401)
+#         return func(*args, **kwargs)
+#     return decorated_function
 
 class SignUp(Resource):
     def post(self):
@@ -93,12 +93,8 @@ class Decks(Resource):
         try:
             deck_data = request.get_json()
             deck = Deck(**deck_data)
+            deck.user_id = session.get('user_id')
             db.session.add(deck)
-            db.session.commit()
-            user_deck = User_Deck()
-            user_deck.user_id = session.get('user_id')
-            user_deck.deck_id = deck.id
-            db.session.add(user_deck)
             db.session.commit()
             return make_response(jsonify(deck.to_dict()), 201)
         except Exception as e:
@@ -115,10 +111,8 @@ class DecksById(Resource):
             return make_response({'error': 'Deck not found'}, 404)
     
     def delete(self, id):
-        # deck_user_id = db.session.get(User_Deck, id)
         try:
             deck = db.session.get(Deck, id)
-            # import ipdb; ipdb.set_trace()
             db.session.delete(deck)
             db.session.commit()
             return make_response(jsonify({}), 204)
@@ -150,12 +144,8 @@ class Spots(Resource):
         try:
             spot_data = request.get_json()
             spot = Spot(**spot_data)
+            spot.user_id = session.get('user_id')
             db.session.add(spot)
-            db.session.commit()
-            user_spot = User_Spot()
-            user_spot.user_id = session.get('user_id')
-            user_spot.spots = spot.id
-            db.session.add(user_spot)
             db.session.commit()
             return make_response(jsonify(spot.to_dict()), 201)
         except Exception as e:
@@ -232,26 +222,6 @@ class UsersById(Resource):
             return make_response({'error': 'Account not found'}, 404)
         
 api.add_resource(UsersById, '/users/<int:id>')
-
-# class UserSpotsById(Resource):
-#     def get(self, id):
-#         user_spots = db.session.get('user_id')
-#         try:
-#             for spots in Spot:
-#                 if user_spots == User_Spot.user_id:
-#                     spots = Spot.query.get(id)
-#                     return make_response(spots.to_dict(), 200)
-#         except Exception:
-#             return make_response({'error': 'No spots found for your account'})
-
-# api.add_resource(UserSpotsById, '/my-spots/<int:id>')
-
-class UserSpots(Resource):
-    def get(self):
-        user_spots = [spot.to_dict() for spot in User_Spot.query.all()]
-        return make_response(jsonify(user_spots), 200)
-    
-api.add_resource(UserSpots, '/my-spots')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
