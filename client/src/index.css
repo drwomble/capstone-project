@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 .group:focus .group-focus\:flex {
     display: flex;
 }

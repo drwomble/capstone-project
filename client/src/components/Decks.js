@@ -8,10 +8,8 @@ const Decks = ({user}) => {
     const mappedDecks = decks.map((deck => <DeckCard key={deck.id} deck={deck} user={user} />))
 
     return (
-        <body>
-        <div>
+        <body class="flex flex-col w-screen min-h-screen p-10 bg-gray-100 text-gray-800">
             {mappedDecks}
-        </div>
         </body>
     )
 }
