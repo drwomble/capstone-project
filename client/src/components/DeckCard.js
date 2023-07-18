@@ -1,6 +1,6 @@
 import EditDeck from "./EditDeck"
 import { useState, useContext } from "react"
-import { DeckContext } from "./deckContext"
+import { DeckContext } from "./context/deckContext"
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min"
 
 //TODO Buttons need to conditionally render

@@ -5,7 +5,7 @@
 # Remote library imports
 from flask import request, make_response, jsonify, session, abort, url_for, redirect
 from werkzeug.security import generate_password_hash, check_password_hash
-from models import User, Deck, Spot
+from models import User, Deck, Spot, Receipt
 from flask_restful import Resource
 from functools import wraps
 

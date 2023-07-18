@@ -2,7 +2,7 @@ import { useState, useContext } from "react";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { ErrorMessage, useFormik } from 'formik';
 import * as yup from 'yup';
-import { DeckContext } from "./deckContext";
+import { DeckContext } from "./context/deckContext";
 
 const NewDeck = () => {
     const [errors, setErrors] = useState([])
