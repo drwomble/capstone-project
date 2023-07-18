@@ -9,6 +9,7 @@ const Decks = ({user}) => {
 
     return (
         <body class="flex flex-col w-screen min-h-screen p-10 bg-gray-100 text-gray-800">
+            <h1 class="text-3xl">Decks For Sale</h1>
             {mappedDecks}
         </body>
     )

@@ -76,6 +76,7 @@ class Receipt(db.Model, SerializerMixin):
     last_name = db.Column(db.String)
     address = db.Column(db.String, nullable=False)
     amount_paid = db.Column(db.Integer, nullable=False)
+    product_id = db.Column(db.Integer, db.ForeignKey('decks.id'))
     created_at = db.Column(db.DateTime, server_default = db.func.now())
     updated_at = db.Column(db.DateTime, onupdate = db.func.now())
     

@@ -4,6 +4,7 @@ import { DeckContext } from "./context/deckContext"
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min"
 
 //TODO Buttons need to conditionally render
+
 const DeckCard = ({ deck, user }) => {
     const [editToggle, setEditToggle] = useState(false)
     const history = useHistory()
@@ -42,6 +43,7 @@ const DeckCard = ({ deck, user }) => {
     return(
         <div>
             <h3>{deck.deck_name}</h3>
+            <a>by </a>
             <span>{deck.brand}</span>
             <img src={deck.image} alt='picture of deck' />
             <span>{deck.price}</span>
