@@ -7,7 +7,6 @@ const MyProfile = ({ user, handleUser }) => {
     // const history = useHistory()
 
     const handleToggle = () => setToggleEditForm(current => !current)
-    
 
     useEffect(() => {
         fetch(`/users/${user.id}`)
