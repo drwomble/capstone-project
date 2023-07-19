@@ -8,6 +8,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from models import User, Deck, Spot, Receipt
 from flask_restful import Resource
 from functools import wraps
+from os import environ
 
 # Local imports
 from config import app, db, api, stripe
@@ -31,7 +32,7 @@ def create_product(id):
         currency= 'usd',
     )
 
-YOUR_DOMAIN = 'http://localhost:5555'
+YOUR_DOMAIN = 'http://localhost:4000'
 
 @app.route('/create-checkout-session', methods=['POST'])
 def create_checkout_session():
@@ -53,6 +54,30 @@ def create_checkout_session():
     
     return redirect(checkout_session.url, code=303)
 
+endpoint_secret = environ.get('ENDPOINT_SECRET')
+
+@app.route('/webhook', methods=['POST'])
+def webhook():
+    event = None
+    payload = request.data
+    sig_header = request.headers['STRIPE_SIGNATURE']
+
+    try:
+        event = stripe.Webhook.construct_event(
+            payload, sig_header, endpoint_secret
+        )
+    except ValueError as e:
+        raise e
+    except stripe.error.SignatureVerificationError as e:
+        raise e
+
+    if event['type'] == 'payment_intent.succeeded':
+        payment_intent = event['data']['object']
+        import ipdb; ipdb.set_trace()
+    else:
+        print('Unhandled event type {}'.format(event['type']))
+
+    return jsonify(success=True)
 
 
 # def decks_login_required(func):
