@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import {NavBar, MobileNav, Typography, Button, IconButton} from '@material-tailwind/react';
 // import { useState, useEffect } from 'react'
 
 const Nav = ({ user }) => {
@@ -11,7 +12,7 @@ const Nav = ({ user }) => {
         )
     }
     return (
-        <nav>
+        <NavBar>
             <Link to='/'>
                 {/* TODO add logo in when styling and  */}
                 {/* src='Logo.png' */}
@@ -41,7 +42,7 @@ const Nav = ({ user }) => {
                     <Link to='/signup'>SignUp</Link>
                 </li>
             </ul>
-        </nav>
+        </NavBar>
     )
 }
 export default Nav
