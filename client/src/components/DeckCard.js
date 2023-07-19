@@ -13,17 +13,17 @@ const DeckCard = ({ deck, user }) => {
     const [message, setMessage] = useState("")
 
     const ProductDisplay = () => (
-        <section>
+        <section className="grid grid-cols-2 items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100">
             <div className="product">
-                <img src={deck.image} alt='Skateboard Deck' />
-                <div className='description'>
-                    <h3>{deck.deck_name}</h3>
-                    <a>by <span>{deck.brand}</span></a>
-                    <h5>Price: ${deck.price}</h5>
+                <img src={deck.image} alt='Skateboard Deck' className="object-cover w-full rounded-t-lg h-96 md:h-auto md:w-48 md:rounded-none md:rounded-l-lg"/>
+                <div className='flex flex-col justify-between p-4 leading-normal'>
+                    <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900">{deck.deck_name}</h5>
+                    <a className="mb-2 text-1xl font-bold tracking-tight text-gray-900">by <span>{deck.brand}</span></a>
+                    <h5 className="mb-2 text-1xl font-bold tracking-tight text-gray-900">Price: ${deck.price}</h5>
                 </div>
             </div>
             <form action='/create-checkout-session' method='POST'>
-                <button type='submit'>Buy Now</button>
+                <button className='text-white bg-gradient-to-br from-green-400 to-blue-600 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-green-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2' type='submit'>Buy Now</button>
             </form>
             {user ? handleDisplayButtons() : null}
         </section>
@@ -47,7 +47,6 @@ const DeckCard = ({ deck, user }) => {
         }
     }, [])
 
-
     const handleEditToggle = () => setEditToggle(current => !current)
 
     const handleDelete = () => {
@@ -68,9 +67,9 @@ const DeckCard = ({ deck, user }) => {
         if (user.id === deck.user_id){
             return (
                 <div>
-                    <button onClick={handleEditToggle}>Edit Listing</button>
+                    <button  className='text-gray-900 bg-gradient-to-r from-teal-200 to-lime-200 hover:bg-gradient-to-l hover:from-teal-200 hover:to-lime-200 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-teal-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2' onClick={handleEditToggle}>Edit Listing</button>
                     <div>{editToggle ? <EditDeck key={deck.id} deck={deck} handleEditToggle={handleEditToggle}/> : null}</div>
-                    <button onClick={handleDelete}>Delete Listing</button>
+                    <button onClick={handleDelete} className="text-gray-900 bg-gradient-to-r from-teal-200 to-lime-200 hover:bg-gradient-to-l hover:from-teal-200 hover:to-lime-200 focus:ring-4 focus:outline-none focus:ring-lime-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">Delete Listing</button>
                 </div>
             )
         } else {

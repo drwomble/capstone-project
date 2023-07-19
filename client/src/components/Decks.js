@@ -8,8 +8,8 @@ const Decks = ({user}) => {
     const mappedDecks = decks.map((deck => <DeckCard key={deck.id} deck={deck} user={user} />))
 
     return (
-        <body className="flex flex-col w-screen min-h-screen p-10 bg-gray-100 text-gray-800">
-            <h1 className="text-3xl">Decks For Sale</h1>
+        <body className="grid grid-cols-3 w-screen min-h-screen p-10 bg-gray-100 text-gray-800">
+            {/* <h1 className="text-3xl">Decks For Sale</h1> */}
             {mappedDecks}
         </body>
     )
