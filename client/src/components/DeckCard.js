@@ -40,14 +40,19 @@ const DeckCard = ({ deck, user }) => {
         }
     }
 
+    const handlePayement = () => {
+
+    }
+
     return(
         <div>
             <h3>{deck.deck_name}</h3>
             <a>by </a>
             <span>{deck.brand}</span>
             <img src={deck.image} alt='picture of deck' />
-            <span>{deck.price}</span>
+            <span>Price: ${deck.price}</span>
             {user ? handleDisplayButtons() : null}
+            <button onClick={handlePayement()} >BUY NOW</button>
         </div>
     )
 }
