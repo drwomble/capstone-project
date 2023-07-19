@@ -78,14 +78,6 @@ const DeckCard = ({ deck, user }) => {
         }
     }
 
-    const handlePayement = () => {
-        return (
-        <div>
-            <Checkout deck={deck} user={user}/>
-        </div>
-        )
-    }
-
     return message ? (
         <Message message={message} />
     ) : (

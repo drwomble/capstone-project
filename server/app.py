@@ -36,6 +36,7 @@ YOUR_DOMAIN = 'http://localhost:4000'
 
 @app.route('/create-checkout-session', methods=['POST'])
 def create_checkout_session():
+    # email = request.json.get('email')
     try:
         checkout_session = stripe.checkout.Session.create(
             line_items=[
@@ -59,8 +60,8 @@ endpoint_secret = environ.get('ENDPOINT_SECRET')
 @app.route('/webhook', methods=['POST'])
 def webhook():
     event = None
-    payload = request.data
-    sig_header = request.headers['STRIPE_SIGNATURE']
+    payload = request.get_data()
+    sig_header = request.headers.get('Stripe_Signature')
 
     try:
         event = stripe.Webhook.construct_event(
@@ -73,7 +74,8 @@ def webhook():
 
     if event['type'] == 'payment_intent.succeeded':
         payment_intent = event['data']['object']
-        import ipdb; ipdb.set_trace()
+        data = request.get_json()
+        # import ipdb; ipdb.set_trace()
     else:
         print('Unhandled event type {}'.format(event['type']))
 
