@@ -10,7 +10,6 @@ from sqlalchemy import MetaData
 from os import environ
 from dotenv import load_dotenv
 
-
 # Local imports
 
 # Instantiate app, set attributes
@@ -36,3 +35,7 @@ api = Api(app)
 
 # Instantiate CORS
 CORS(app)
+
+#Stripe
+import stripe
+stripe.api_key = environ.get('STRIPE_API_TEST_KEY')

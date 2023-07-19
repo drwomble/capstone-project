@@ -3,19 +3,57 @@
 # Standard library imports
 
 # Remote library imports
-from flask import request, make_response, jsonify, session, abort, url_for, redirect
+from flask import request, make_response, jsonify, session, abort, url_for, redirect, request
 from werkzeug.security import generate_password_hash, check_password_hash
 from models import User, Deck, Spot, Receipt
 from flask_restful import Resource
 from functools import wraps
 
 # Local imports
-from config import app, db, api
+from config import app, db, api, stripe
 
 # Views go here!
 @app.route('/')
 def home():
     return 'you made it home, good job'
+
+#Stripe
+
+def create_product(id):
+    
+    name = Deck.query.get(id)
+    
+    new_product = stripe.Product.create(name=name.deck_name)
+    
+    stripe.Price.create(
+        product= str(new_product),
+        unit_amount=1,
+        currency= 'usd',
+    )
+
+YOUR_DOMAIN = 'http://localhost:5555'
+
+@app.route('/create-checkout-session', methods=['POST'])
+def create_checkout_session():
+    try:
+        checkout_session = stripe.checkout.Session.create(
+            line_items=[
+                {
+                    #TODO replace test price Id with real ones
+                    'price' : 'price_1NVPerCCsCgVNEg9J45H19DS',
+                    'quantity' : 1,
+                },
+            ],
+            mode='payment',
+            success_url=YOUR_DOMAIN + '?success=true',
+            cancel_url=YOUR_DOMAIN + '?canceled=true',
+        )
+    except Exception as e:
+        return make_response(str(e))
+    
+    return redirect(checkout_session.url, code=303)
+
+
 
 # def decks_login_required(func):
 #     @wraps(func)

@@ -7,7 +7,7 @@ import './index.css'
 
 ReactDOM.render(
     <DeckProvider>
-        <BrowserRouter>
+        <BrowserRouter >
             <App />
         </BrowserRouter>
     </DeckProvider>,

@@ -1,14 +1,52 @@
 import EditDeck from "./EditDeck"
-import { useState, useContext } from "react"
+import { useState, useContext, useEffect } from "react"
 import { DeckContext } from "./context/deckContext"
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min"
+import Checkout from "./Checkout"
 
-//TODO Buttons need to conditionally render
+
 
 const DeckCard = ({ deck, user }) => {
     const [editToggle, setEditToggle] = useState(false)
     const history = useHistory()
     const {handleDeckDelete} = useContext(DeckContext)
+    const [message, setMessage] = useState("")
+
+    const ProductDisplay = () => (
+        <section>
+            <div className="product">
+                <img src={deck.image} alt='Skateboard Deck' />
+                <div className='description'>
+                    <h3>{deck.deck_name}</h3>
+                    <a>by <span>{deck.brand}</span></a>
+                    <h5>Price: ${deck.price}</h5>
+                </div>
+            </div>
+            <form action='/create-checkout-session' method='POST'>
+                <button type='submit'>Buy Now</button>
+            </form>
+            {user ? handleDisplayButtons() : null}
+        </section>
+    );
+
+    const Message = ({ message }) => (
+        <section>
+            <p>{message}</p>
+        </section>
+    )
+
+    useEffect(() => {
+        const query = new URLSearchParams(window.location.search)
+
+        if (query.get('success')) {
+            setMessage('Order placed! You will recieve an email confirmation.')
+        }
+
+        if (query.get('canceled')) {
+            setMessage("Order canceled -- continue to shop and checkout when you're ready.")
+        }
+    }, [])
+
 
     const handleEditToggle = () => setEditToggle(current => !current)
 
@@ -41,19 +79,17 @@ const DeckCard = ({ deck, user }) => {
     }
 
     const handlePayement = () => {
-
+        return (
+        <div>
+            <Checkout deck={deck} user={user}/>
+        </div>
+        )
     }
 
-    return(
-        <div>
-            <h3>{deck.deck_name}</h3>
-            <a>by </a>
-            <span>{deck.brand}</span>
-            <img src={deck.image} alt='picture of deck' />
-            <span>Price: ${deck.price}</span>
-            {user ? handleDisplayButtons() : null}
-            <button onClick={handlePayement()} >BUY NOW</button>
-        </div>
+    return message ? (
+        <Message message={message} />
+    ) : (
+        <ProductDisplay />
     )
 }
 
