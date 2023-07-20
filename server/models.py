@@ -15,13 +15,15 @@ class Deck(db.Model, SerializerMixin):
     price = db.Column(db.Integer, nullable=False)
     image = db.Column(db.String)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    stripe_product_id = db.Column(db.String)
+    stripe_price_id = db.Column(db.String)
     created_at = db.Column(db.DateTime, server_default = db.func.now())
     updated_at = db.Column(db.DateTime, onupdate = db.func.now())
     
     user = db.relationship('User', back_populates='deck')
     
     
-    serialize_only = ('id', 'brand', 'deck_name', 'price', 'image', 'user_id')
+    serialize_only = ('id', 'brand', 'deck_name', 'price', 'image', 'user_id', "stripe_product_id", 'stripe_price_id')
     
     def __repr__(self):
         return f'<Deck id:{self.id}, name:{self.deck_name}, price:{self.price}>'
@@ -71,10 +73,6 @@ class Receipt(db.Model, SerializerMixin):
     
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    paid_in_full = db.Column(db.Boolean)
-    first_name = db.Column(db.String)
-    last_name = db.Column(db.String)
-    address = db.Column(db.String, nullable=False)
     amount_paid = db.Column(db.Integer, nullable=False)
     product_id = db.Column(db.Integer, db.ForeignKey('decks.id'))
     created_at = db.Column(db.DateTime, server_default = db.func.now())
@@ -82,7 +80,7 @@ class Receipt(db.Model, SerializerMixin):
     
     user = db.relationship('User', back_populates='receipt')
     
-    serialize_only = ('id', 'user_id', 'paid_in_full', 'first_name', 'last_name', 'address', 'amount_paid')
+    serialize_only = ('id', 'user_id', 'amount_paid', 'product_id')
     
     def __repr__(self):
         return f'<Receipt id: {self.id}, amount paid: {self.amount_paid}>'

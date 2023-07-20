@@ -32,23 +32,28 @@ const SignIn = ({ handleUser }) => {
     }
 
     return (
-    <body className="flex flex-col items-center justify-center w-screen h-screen bg-gray-200 text-gray-700">
-        <h1 className="flex flex-col items-center justify-center w-screen h-screen bg-gray-200 text-gray-700">Welcome Back!</h1>
-        <form className="flex flex-col bg-white rounded shadow-lg p-12 mt-12" onSubmit={handleSubmit}>
-            <label className="font-semibold text-xs" for="emailField">Email</label>
-            <input className="flex items-center h-12 px-4 w-64 bg-gray-200 mt-2 rounded focus:outline-none focus:ring-2"
+    <div className="px-40">
+        <form onSubmit={handleSubmit}>
+            <div className="mb-6">
+            <label className="block mb-2 text-sm font-medium text-gray-900" for="emailField">Email</label>
+            <input className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
             onChange={(e) => setEmail(e.target.value)}  
             />
-            <label className="font-semibold text-xs mt-3" for="passwordField">Password</label>
-            <input className="flex items-center h-12 px-4 w-64 bg-gray-200 mt-2 rounded focus:outline-none focus:ring-2"
+            </div>
+            <div className="mb-6">
+            <label className="block mb-2 text-sm font-medium text-gray-900" for="passwordField">Password</label>
+            <input className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
             onChange={(e) => setPassword(e.target.value)}
             />
-            <input className="flex items-center justify-center h-12 px-6 w-64 bg-blue-600 mt-8 rounded font-semibold text-sm text-blue-100 hover:bg-blue-700" type='submit' />
-            <div className="flex mt-6 justify-center text-xs">
-                <button className="text-blue-400 hover:text-blue-500">Sign Up</button>
+            </div>
+            <div className="mb-6">
+            <input className='text-gray-900 bg-gradient-to-r from-teal-200 to-lime-200 hover:bg-gradient-to-l hover:from-teal-200 hover:to-lime-200 focus:ring-4 focus:outline-none focus:ring-lime-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2' type='submit' />
+            </div>
+            <div className="mb-6">
+            <button className='text-gray-900 bg-gradient-to-r from-teal-200 to-lime-200 hover:bg-gradient-to-l hover:from-teal-200 hover:to-lime-200 focus:ring-4 focus:outline-none focus:ring-lime-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2'>Sign Up</button>
             </div>
         </form>
-    </body>
+    </div>
     )
 }
 export default SignIn

@@ -4,7 +4,6 @@ import { useState, useEffect } from "react"
 
 const MyProfile = ({ user, handleUser }) => {
     const [toggleForm, setToggleEditForm] = useState(false)
-    // const history = useHistory()
 
     const handleToggle = () => setToggleEditForm(current => !current)
 
@@ -15,6 +14,7 @@ const MyProfile = ({ user, handleUser }) => {
     // }, [])
 
     return (
+        <div className="flex justify-center">
         <div className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow">
             <div className="flex flex-col items-center pb-10">
             <img src={user.profile_picture} alt='profile photograph' className="w-24 h-24 mb-3 rounded-full shadow-lg"/>
@@ -25,6 +25,7 @@ const MyProfile = ({ user, handleUser }) => {
                 {toggleForm ? <EditProfile key={user.id} user={user} handleUser={handleUser} handleToggle={handleToggle} /> : ''}
                 </div>
             </div>
+        </div>
         </div>
     )
 }

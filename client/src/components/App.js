@@ -12,6 +12,9 @@ import EditProfile from "./EditProfile";
 import NewDeck from "./NewDeck";
 import NewSpot from "./NewSpot";
 import EditDeck from "./EditDeck";
+import SuccessPage from "./Success";
+import CancelPage from "./Cancel";
+import HomePage from "./HomePage";
 
 function App() {
   const [spots, setSpots] = useState([])
@@ -41,6 +44,9 @@ function App() {
   <main>
     <Nav user={user}/>
     <Switch>
+      <Route exact path='/'>
+        <HomePage />
+      </Route>
       <Route exact path='/decks'>
         <Decks user={user} />
       </Route>
@@ -70,6 +76,12 @@ function App() {
       </Route>
       <Route exact path='/signout'>
         <SignOut handleUser={handleUser} />
+      </Route>
+      <Route path='/success'>
+        <SuccessPage />
+      </Route>
+      <Route path='/canceled'>
+        <CancelPage />
       </Route>
     </Switch>
     <Footer />

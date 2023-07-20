@@ -47,8 +47,8 @@ def create_checkout_session():
                 },
             ],
             mode='payment',
-            success_url=YOUR_DOMAIN + '?success=true',
-            cancel_url=YOUR_DOMAIN + '?canceled=true',
+            success_url=YOUR_DOMAIN + '/success',
+            cancel_url=YOUR_DOMAIN + '/canceled',
         )
     except Exception as e:
         return make_response(str(e))
@@ -74,8 +74,8 @@ def webhook():
 
     if event['type'] == 'payment_intent.succeeded':
         payment_intent = event['data']['object']
-        data = request.get_json()
-        # import ipdb; ipdb.set_trace()
+        
+        import ipdb; ipdb.set_trace()
     else:
         print('Unhandled event type {}'.format(event['type']))
 

@@ -62,7 +62,7 @@ const NewDeck = () => {
     })
 
     return (
-        <div>
+        <div className="px-40">
             <form onSubmit={formik.handleSubmit}>
                 <div className="mb-6" >
                 <label className="block mb-2 text-sm font-medium text-gray-900">Brand</label>
