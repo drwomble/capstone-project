@@ -2,20 +2,13 @@ import SpotCard from './SpotCard'
 // import { useEffect, useState } from 'react'
 
 const Spots = ({ spots }) => {
-    // const [userSpots, setUserSpots] = useState([])
-
-    // useEffect(() => {
-    //     fetch('/my-spots')
-    //     .then((r) => r.json())
-    //     .then(data => setUserSpots(data))
-    // }, [])
 
     const mappedSpots = spots.map(spot => <SpotCard key={spot.id}          spot={spot}  />) 
 
     return(
-        <div>
+        <body className="grid grid-cols-3 w-screen min-h-screen p-10 bg-gray-100 text-gray-800">
             {mappedSpots}
-        </div>
+        </body>
     )
 }
 
