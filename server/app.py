@@ -18,20 +18,6 @@ from config import app, db, api, stripe
 def home():
     return 'you made it home, good job'
 
-#Stripe
-
-def create_product(deck_to_create):
-    
-    new_product = stripe.Product.create(name=deck_to_create.deck_name)
-    
-    new_price = stripe.Price.create(
-        unit_amount= (deck_to_create.price * 100),
-        currency= 'usd',
-        product= new_product.id
-    )
-    deck_to_create.stripe_product_id = new_product.stripe_id
-    deck_to_create
-    
 
 YOUR_DOMAIN = 'http://localhost:4000'
 
@@ -160,9 +146,18 @@ class Decks(Resource):
             deck_data = request.get_json()
             deck = Deck(**deck_data)
             deck.user_id = session.get('user_id')
-            create_product(deck)
-            import ipdb; ipdb.set_trace()
             db.session.add(deck)
+            db.session.commit()
+            new_product = stripe.Product.create(name=deck.deck_name)
+            new_price = stripe.Price.create(
+                unit_amount = (deck.price * 100),
+                currency = 'usd',
+                product = new_product.id
+            )
+            deck.stripe_product_id = new_product.id 
+            deck.stripe_price_id = new_price.id 
+            setattr(deck, 'stripe_product_id', deck.stripe_product_id)
+            setattr(deck, 'stripe_price_id', deck.stripe_price_id)
             db.session.commit()
             return make_response(jsonify(deck.to_dict()), 201)
         except Exception as e:
@@ -186,7 +181,7 @@ class DecksById(Resource):
             return make_response(jsonify({}), 204)
         except Exception:
             return make_response({'error': 'deck not found'}, 404)
-        
+    
     # @decks_login_required
     def patch(self, id):
         deck_by_id = db.session.get(Deck, id)
