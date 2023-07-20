@@ -20,16 +20,14 @@ def home():
 
 #Stripe
 
-def create_product(id):
+def create_product(deck_to_create):
     
-    name = Deck.query.get(id)
-    
-    new_product = stripe.Product.create(name=name.deck_name)
+    new_product = stripe.Product.create(name=deck_to_create.deck_name)
     
     stripe.Price.create(
-        product= str(new_product),
-        unit_amount=1,
+        unit_amount= (deck_to_create.price * 100),
         currency= 'usd',
+        product= new_product.id
     )
 
 YOUR_DOMAIN = 'http://localhost:4000'
@@ -161,6 +159,7 @@ class Decks(Resource):
             deck.user_id = session.get('user_id')
             db.session.add(deck)
             db.session.commit()
+            create_product(deck)
             return make_response(jsonify(deck.to_dict()), 201)
         except Exception as e:
             return make_response({'error': [str(e)]}, 400)

@@ -2,6 +2,7 @@
 
 # Standard library imports
 from random import randint, choice as rc
+import stripe
 
 # Remote library imports
 
@@ -22,8 +23,8 @@ if __name__ == '__main__':
         print('Seeding data....')
         
         deck_1 = Deck(brand='Welcome', deck_name='Sloth On Bunyip', price=65, image='https://scene7.zumiez.com/is/image/zumiez/product_main_medium/Welcome-Sloth-On-Bunyip-White%2C-Blue-%26-Yellow-8.0%22-Skateboard-Deck-_320236-front-US.jpg', user_id=1)
-        deck_2 = Deck(brand='Girl', deck_name='test', price=45, image='https://mainlandskateandsurf.com/cdn/shop/products/girl-deck-bannerot-93-til-deck-teal_680x.png?v=1672354817', user_id=1)
-        deck_3 = Deck(brand='Girl', deck_name='test', price=45, image='https://mainlandskateandsurf.com/cdn/shop/products/girl-deck-bannerot-93-til-deck-teal_680x.png?v=1672354817', user_id=1)
+        deck_2 = Deck(brand='Girl', deck_name='test1', price=25, image='https://mainlandskateandsurf.com/cdn/shop/products/girl-deck-bannerot-93-til-deck-teal_680x.png?v=1672354817', user_id=1)
+        deck_3 = Deck(brand='Girl', deck_name='test2', price=45, image='https://mainlandskateandsurf.com/cdn/shop/products/girl-deck-bannerot-93-til-deck-teal_680x.png?v=1672354817', user_id=1)
         
         user_1 = User(username='test', email='test1', password_hash=generate_password_hash('123', method='scrypt'), bio='test')
         user_2 = User(username='test', email='test2', password_hash=generate_password_hash('123', method='scrypt'), bio='test')
@@ -33,11 +34,11 @@ if __name__ == '__main__':
         spot_2 = Spot(location='over there', image='https://mainlandskateandsurf.com/cdn/shop/products/girl-deck-bannerot-93-til-deck-teal_680x.png?v=1672354817', description='its a spot', name= 'the spot', user_id=1)
         spot_3 = Spot(location='over there', image='https://mainlandskateandsurf.com/cdn/shop/products/girl-deck-bannerot-93-til-deck-teal_680x.png?v=1672354817', description='its a spot', name='sponge stairs', user_id=1)
         
-        receipt_1 = Receipt(user_id=1, paid_in_full=True, first_name='drew', last_name='Womble', address='way ova there', amount_paid=45, product_id=22)
+        receipt_1 = Receipt(user_id=1, amount_paid=45, product_id=22)
         
-        receipt_2 = Receipt(user_id=1, paid_in_full=False, first_name='drew', last_name='NotWomble', address='way ova there', amount_paid=45, product_id=24)
+        receipt_2 = Receipt(user_id=1, amount_paid=45, product_id=24)
         
-        receipt_3 = Receipt(user_id=2, paid_in_full=True, first_name='James', last_name='Loser', address='way ova there', amount_paid=45, product_id=36)
+        receipt_3 = Receipt(user_id=2, amount_paid=45, product_id=36)
         
         
         db.session.add_all([deck_1, deck_2, deck_3, user_1, user_2, user_3, spot_1, spot_2, spot_3, receipt_1, receipt_2, receipt_3])
@@ -45,3 +46,21 @@ if __name__ == '__main__':
         
         print('Done seeding data....')
         
+        print('Creating products on stripe...')
+        
+        
+    def create_product(new_deck):
+    
+        new_product = stripe.Product.create(name=new_deck.deck_name)
+    
+        stripe.Price.create(
+            unit_amount= (new_deck.price * 100),
+            currency= 'usd',
+            product= new_product.id
+        )
+    
+    create_product(deck_1)
+    create_product(deck_2)
+    create_product(deck_3)
+    
+    print('done creating products on stripe')
