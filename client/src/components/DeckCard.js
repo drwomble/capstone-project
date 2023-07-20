@@ -2,9 +2,6 @@ import EditDeck from "./EditDeck"
 import { useState, useContext, useEffect } from "react"
 import { DeckContext } from "./context/deckContext"
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min"
-import Checkout from "./Checkout"
-
-
 
 const DeckCard = ({ deck, user }) => {
     const [editToggle, setEditToggle] = useState(false)
@@ -23,7 +20,7 @@ const DeckCard = ({ deck, user }) => {
                 </div>
             </div>
             <form action='/create-checkout-session' method='POST'>
-                <button className='text-white bg-gradient-to-br from-green-400 to-blue-600 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-green-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2' type='submit'>Buy Now</button>
+                <button className='text-gray-900 bg-gradient-to-r from-teal-200 to-lime-200 hover:bg-gradient-to-l hover:from-teal-200 hover:to-lime-200 focus:ring-4 focus:outline-none focus:ring-lime-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2' type='submit'>Buy Now</button>
             </form>
             {user ? handleDisplayButtons() : null}
         </section>

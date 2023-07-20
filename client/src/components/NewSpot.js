@@ -59,19 +59,27 @@ const NewSpot = ({ addSpot }) => {
     return (
         <div>
             <form onSubmit={formik.handleSubmit}>
-                <label>Name</label>
-                <input type='text' name='name' value={formik.values.name} onChange={formik.handleChange} />
+                <div className="mb-6" >
+                <label className="block mb-2 text-sm font-medium text-gray-900">Name</label>
+                <input className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5' type='text' name='name' value={formik.values.name} onChange={formik.handleChange} />
                 {formik.errors.name}
-                <label>Location</label>
-                <input type='text' name='location' value={formik.values.location} onChange={formik.handleChange} />
+                </div>
+                <div className="mb-6" >
+                <label className="block mb-2 text-sm font-medium text-gray-900">Location</label>
+                <input className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5' type='text' name='location' value={formik.values.location} onChange={formik.handleChange} />
                 {formik.errors.location}
-                <label>Picture</label>
-                <input type='text' name='image' value={formik.values.image} onChange={formik.handleChange} />
+                </div>
+                <div className="mb-6" >
+                <label className="block mb-2 text-sm font-medium text-gray-900">Picture</label>
+                <input className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5' type='text' name='image' value={formik.values.image} onChange={formik.handleChange} />
                 {formik.errors.image}
-                <label>Description</label>
-                <input type='text' name='description' value={formik.values.description} onChange={formik.handleChange} />
+                </div>
+                <div className="mb-6" >
+                <label className="block mb-2 text-sm font-medium text-gray-900">Description</label>
+                <input className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5' type='text' name='description' value={formik.values.description} onChange={formik.handleChange} />
                 {formik.errors.description}
-                <input type='submit' />
+                </div>
+                <input className='text-gray-900 bg-gradient-to-r from-teal-200 to-lime-200 hover:bg-gradient-to-l hover:from-teal-200 hover:to-lime-200 focus:ring-4 focus:outline-none focus:ring-lime-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2' type='submit' />
             </form>
         </div>
     )
