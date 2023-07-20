@@ -3,12 +3,14 @@
 # Standard library imports
 
 # Remote library imports
-from flask import request, make_response, jsonify, session, abort, url_for, redirect, request
+from flask import request, make_response, jsonify, session, abort, url_for, redirect
 from werkzeug.security import generate_password_hash, check_password_hash
 from models import User, Deck, Spot, Receipt
 from flask_restful import Resource
 from functools import wraps
 from os import environ
+import requests
+import ipdb
 
 # Local imports
 from config import app, db, api, stripe
@@ -21,15 +23,14 @@ def home():
 
 YOUR_DOMAIN = 'http://localhost:4000'
 
-@app.route('/create-checkout-session', methods=['POST'])
-def create_checkout_session():
-    # email = request.json.get('email')
+@app.route('/create-checkout-session/<int:id>', methods=['POST'])
+def create_checkout_session(id):
+    deck_to_purchase = Deck.query.get(id)
     try:
         checkout_session = stripe.checkout.Session.create(
             line_items=[
                 {
-                    #TODO replace test price Id with real ones
-                    'price' : 'price_1NVPerCCsCgVNEg9J45H19DS',
+                    'price' : deck_to_purchase.stripe_price_id,
                     'quantity' : 1,
                 },
             ],
