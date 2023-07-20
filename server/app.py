@@ -24,11 +24,14 @@ def create_product(deck_to_create):
     
     new_product = stripe.Product.create(name=deck_to_create.deck_name)
     
-    stripe.Price.create(
+    new_price = stripe.Price.create(
         unit_amount= (deck_to_create.price * 100),
         currency= 'usd',
         product= new_product.id
     )
+    deck_to_create.stripe_product_id = new_product.stripe_id
+    deck_to_create
+    
 
 YOUR_DOMAIN = 'http://localhost:4000'
 
@@ -157,9 +160,10 @@ class Decks(Resource):
             deck_data = request.get_json()
             deck = Deck(**deck_data)
             deck.user_id = session.get('user_id')
+            create_product(deck)
+            import ipdb; ipdb.set_trace()
             db.session.add(deck)
             db.session.commit()
-            create_product(deck)
             return make_response(jsonify(deck.to_dict()), 201)
         except Exception as e:
             return make_response({'error': [str(e)]}, 400)
