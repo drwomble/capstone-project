@@ -32,6 +32,7 @@ const SignUp = ({ handleUser }) => {
             r.json().then(handleUser)
             alert('Account successfully created. Returning you to home...')
             history.push('/')
+            window.location.reload()
         } else {
             alert('Something went wrong, please try again.')
         }
@@ -69,13 +70,6 @@ const SignUp = ({ handleUser }) => {
                 <input 
                 className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
                 onChange={(e) => setBio(e.target.value)}
-                />
-                </div>
-                <div className="mb-6" >
-                <label className='block mb-2 text-sm font-medium text-gray-900'>Password</label>
-                <input 
-                className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
-                onChange={(e) => setPassword(e.target.value)}
                 />
                 </div>
                 <div className="mb-6" >

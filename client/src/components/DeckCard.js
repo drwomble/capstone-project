@@ -53,7 +53,8 @@ const DeckCard = ({ deck, user }) => {
             if(r.ok){
                 handleDeckDelete(r)
                 alert('Listing deleted.')
-                history.push('/')
+                history.push('/decks')
+                window.location.reload()
             } else {
                 alert('Something went wrong. Please try again.')
             }

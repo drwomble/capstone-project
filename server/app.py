@@ -9,7 +9,7 @@ from models import User, Deck, Spot, Receipt
 from flask_restful import Resource
 from functools import wraps
 from os import environ
-import requests
+# import requests
 import ipdb
 
 # Local imports
@@ -148,7 +148,6 @@ class Decks(Resource):
         decks = [deck.to_dict() for deck in Deck.query.all()]
         return make_response(jsonify(decks), 200)
     
-    # @decks_login_required
     def post(self):
         if not session['user_id']:
             return make_response({'error': 'Unauthorized'}, 401)
