@@ -1,18 +1,25 @@
 //TODO change alerts to something better and make this happen when sign out nav button is clicked
 
 import { useHistory } from "react-router-dom"
+import toastr from 'toastr';
+import 'toastr/build/toastr.min.css'
 
 const SignOut = ({ handleUser }) => {
 
     const history = useHistory()
 
     const handleSignOut = () => {
+        toastr.options = {
+            postionClass : 'toast-top-full-width',
+            hideDuration : 300,
+            timeOut : 60000
+        }
         fetch('/signout', {
             method: 'DELETE',
         }).then((r) => {
             if(r.ok){
                 handleUser(null)
-                alert('SignOut successful. Returning to home...')
+                toastr.success('SignOut successful. Returning to home...')
                 history.push('/')
             } else {
                 alert('Something went wrong. Please try again.')
@@ -21,7 +28,7 @@ const SignOut = ({ handleUser }) => {
     }
 
     const handleNo = () => {
-        alert('Very well. Returning you home...') 
+        toastr.success('Very well. Returning you home...') 
         history.push('/')
     }
 

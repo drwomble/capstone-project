@@ -2,6 +2,8 @@ import EditDeck from "./EditDeck"
 import { useState, useContext, useEffect } from "react"
 import { DeckContext } from "./context/deckContext"
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min"
+import toastr from 'toastr';
+import 'toastr/build/toastr.min.css'
 
 const DeckCard = ({ deck, user }) => {
     const [editToggle, setEditToggle] = useState(false)
@@ -47,16 +49,21 @@ const DeckCard = ({ deck, user }) => {
     const handleEditToggle = () => setEditToggle(current => !current)
 
     const handleDelete = () => {
+        toastr.options = {
+            postionClass : 'toast-top-full-width',
+            hideDuration : 300,
+            timeOut : 60000
+        }
         fetch(`/decks/${deck.id}`, {
             method: 'DELETE',
         }).then((r) => {
             if(r.ok){
                 handleDeckDelete(r)
-                alert('Listing deleted.')
+                toastr.success('Listing deleted.')
                 history.push('/decks')
                 window.location.reload()
             } else {
-                alert('Something went wrong. Please try again.')
+                toastr.error('Something went wrong. Please try again.')
             }
         })
     }

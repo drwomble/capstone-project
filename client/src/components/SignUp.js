@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom/';
+import toastr from 'toastr';
+import 'toastr/build/toastr.min.css'
 
 const SignUp = ({ handleUser }) => {
     const [username, setUsername] = useState("")
@@ -12,6 +14,11 @@ const SignUp = ({ handleUser }) => {
     const history = useHistory()
 
     const handleSubmit = (e) => {
+        toastr.options = {
+            postionClass : 'toast-top-full-width',
+            hideDuration : 300,
+            timeOut : 60000
+        }
         e.preventDefault()
         const newUserObj = {
             username: username,
@@ -30,11 +37,11 @@ const SignUp = ({ handleUser }) => {
     .then((r) => {
         if(r.ok){
             r.json().then(handleUser)
-            alert('Account successfully created. Returning you to home...')
+            toastr.success('Account successfully created. Returning you to home...')
             history.push('/')
             window.location.reload()
         } else {
-            alert('Something went wrong, please try again.')
+            toastr.error('Something went wrong, please try again.')
         }
     })
     }

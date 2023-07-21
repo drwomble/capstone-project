@@ -2,6 +2,8 @@
 
 import { useState } from "react"
 import { useHistory } from "react-router-dom"
+import toastr from 'toastr';
+import 'toastr/build/toastr.min.css'
 
 const SignIn = ({ handleUser }) => {
     const [email, setEmail] = useState('')
@@ -9,6 +11,11 @@ const SignIn = ({ handleUser }) => {
     const history = useHistory()
 
     const handleSubmit = (e) => {
+        toastr.options = {
+            postionClass : 'toast-top-full-width',
+            hideDuration : 300,
+            timeOut : 60000
+        }
         e.preventDefault()
         const userObj = {email: email, password: password}
         fetch('/signin', {
@@ -22,7 +29,7 @@ const SignIn = ({ handleUser }) => {
             if(r.ok){
                 r.json().then(data => handleUser(data))
                 //change alert to text notif
-                alert('You have been signed in. Returning to home...')
+                toastr.success('You have been signed in. Returning to home...')
                 history.push('/')
             } else {
                 //change alert to notif
