@@ -74,14 +74,13 @@ class Receipt(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     amount_paid = db.Column(db.Integer, nullable=False)
-    product_id = db.Column(db.Integer, db.ForeignKey('decks.id'))
     event_id = db.Column(db.String)
     created_at = db.Column(db.DateTime, server_default = db.func.now())
     updated_at = db.Column(db.DateTime, onupdate = db.func.now())
     
     user = db.relationship('User', back_populates='receipt')
     
-    serialize_only = ('id', 'user_id', 'amount_paid', 'product_id')
+    serialize_only = ('id', 'user_id', 'amount_paid')
     
     def __repr__(self):
         return f'<Receipt id: {self.id}, amount paid: {self.amount_paid}>'

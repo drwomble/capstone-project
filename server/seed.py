@@ -34,11 +34,11 @@ if __name__ == '__main__':
         spot_2 = Spot(location='over there', image='https://mainlandskateandsurf.com/cdn/shop/products/girl-deck-bannerot-93-til-deck-teal_680x.png?v=1672354817', description='its a spot', name= 'the spot', user_id=1)
         spot_3 = Spot(location='over there', image='https://mainlandskateandsurf.com/cdn/shop/products/girl-deck-bannerot-93-til-deck-teal_680x.png?v=1672354817', description='its a spot', name='sponge stairs', user_id=1)
         
-        receipt_1 = Receipt(user_id=1, amount_paid=45, product_id=22)
+        receipt_1 = Receipt(user_id=1, amount_paid=45)
         
-        receipt_2 = Receipt(user_id=1, amount_paid=45, product_id=24)
+        receipt_2 = Receipt(user_id=1, amount_paid=45)
         
-        receipt_3 = Receipt(user_id=2, amount_paid=45, product_id=36)
+        receipt_3 = Receipt(user_id=2, amount_paid=45)
         
         
         db.session.add_all([deck_1, deck_2, deck_3, user_1, user_2, user_3, spot_1, spot_2, spot_3, receipt_1, receipt_2, receipt_3])

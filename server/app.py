@@ -25,6 +25,8 @@ YOUR_DOMAIN = 'http://localhost:4000'
 
 @app.route('/create-checkout-session/<int:id>', methods=['POST'])
 def create_checkout_session(id):
+    if not session['user_id']:
+        return make_response({'error': 'You must be signed in to an account to make a purchase'}, 401)
     deck_to_purchase = Deck.query.get(id)
     user_transaction = session.get('user_id')
     try:
@@ -62,14 +64,14 @@ def webhook():
     except stripe.error.SignatureVerificationError as e:
         raise e
 
-    if event['type'] == 'payment_intent.succeeded':
-        payment_intent = event['data']['object']
-        data_to_insert = Receipt()
-        data_to_insert.amount_paid = payment_intent.amount_received
-        data_to_insert.event_id = payment_intent.id
-        # data_to_insert.user_id = session.get('user_id')
-        # import ipdb; ipdb.set_trace()
-        db.session.add(data_to_insert)
+    if event['type'] == 'checkout.session.completed':
+        checkout_session = event['data']['object']
+        data_for_db = Receipt()
+        data_for_db.user_id = checkout_session.client_reference_id
+        data_for_db.event_id = checkout_session.id
+        if checkout_session.payment_status == 'paid':
+            data_for_db.amount_paid = checkout_session.amount_total
+        db.session.add(data_for_db)
         db.session.commit()
     else:
         print('Unhandled event type {}'.format(event['type']))
