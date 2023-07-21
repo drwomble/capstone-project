@@ -5,3 +5,4 @@
 .group:focus .group-focus\:flex {
     display: flex;
 }
+#shadow-blur { color:transparent; text-shadow:0 0 7px #555, 0 0 10px #000; }

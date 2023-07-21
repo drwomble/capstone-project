@@ -2,7 +2,7 @@
 
 # Standard library imports
 from random import randint, choice as rc
-import stripe
+# import stripe
 
 # Remote library imports
 

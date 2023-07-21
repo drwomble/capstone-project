@@ -75,7 +75,7 @@ const NewDeck = () => {
                 {formik.errors.deck_name}
                 </div>
                 <div className="mb-6" >
-                <label className="block mb-2 text-sm font-medium text-gray-900">Price</label>
+                <label className="block mb-2 text-sm font-medium text-gray-900">Price (In whole dollars)</label>
                 <input className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5' type='text' name='price' value={formik.values.price} onChange={formik.handleChange} />
                 {formik.errors.price}
                 </div>
