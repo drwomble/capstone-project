@@ -26,15 +26,17 @@ YOUR_DOMAIN = 'http://localhost:4000'
 @app.route('/create-checkout-session/<int:id>', methods=['POST'])
 def create_checkout_session(id):
     deck_to_purchase = Deck.query.get(id)
+    user_transaction = session.get('user_id')
     try:
         checkout_session = stripe.checkout.Session.create(
             line_items=[
                 {
                     'price' : deck_to_purchase.stripe_price_id,
-                    'quantity' : 1,
+                    'quantity' : 1
                 },
             ],
             mode='payment',
+            client_reference_id = user_transaction,
             success_url=YOUR_DOMAIN + '/success',
             cancel_url=YOUR_DOMAIN + '/canceled',
         )
@@ -62,8 +64,13 @@ def webhook():
 
     if event['type'] == 'payment_intent.succeeded':
         payment_intent = event['data']['object']
-        
-        import ipdb; ipdb.set_trace()
+        data_to_insert = Receipt()
+        data_to_insert.amount_paid = payment_intent.amount_received
+        data_to_insert.event_id = payment_intent.id
+        # data_to_insert.user_id = session.get('user_id')
+        # import ipdb; ipdb.set_trace()
+        db.session.add(data_to_insert)
+        db.session.commit()
     else:
         print('Unhandled event type {}'.format(event['type']))
 
