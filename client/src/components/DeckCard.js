@@ -59,9 +59,9 @@ const DeckCard = ({ deck, user }) => {
         }).then((r) => {
             if(r.ok){
                 handleDeckDelete(r)
-                toastr.success('Listing deleted.')
                 history.push('/decks')
                 window.location.reload()
+                toastr.success('Listing deleted.')
             } else {
                 toastr.error('Something went wrong. Please try again.')
             }

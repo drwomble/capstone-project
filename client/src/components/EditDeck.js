@@ -3,6 +3,14 @@ import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { ErrorMessage, useFormik } from 'formik';
 import * as yup from 'yup';
 import { DeckContext } from "./context/deckContext";
+import toastr from 'toastr';
+import 'toastr/build/toastr.min.css'
+
+toastr.options = {
+    postionClass : 'toast-top-full-width',
+    hideDuration : 300,
+    timeOut : 60000
+}
 
 const EditDeck = ({ deck, handleEditToggle}) => {
     const history = useHistory()
@@ -50,6 +58,7 @@ const EditDeck = ({ deck, handleEditToggle}) => {
                         handleDeckEdit(data)
                         resetForm({values: ''})
                         history.push('/decks')
+                        toastr.success('Your adjustments have been added to the database')
                         handleEditToggle()
                     })
                 } else {

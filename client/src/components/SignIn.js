@@ -28,12 +28,10 @@ const SignIn = ({ handleUser }) => {
         .then((r) => {
             if(r.ok){
                 r.json().then(data => handleUser(data))
-                //change alert to text notif
                 toastr.success('You have been signed in. Returning to home...')
                 history.push('/')
             } else {
-                //change alert to notif
-                alert('Invalid email or password please try again')
+                toastr.error('Invalid email or password please try again')
             }
         })
     }
