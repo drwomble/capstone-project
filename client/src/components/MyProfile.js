@@ -14,7 +14,7 @@ const MyProfile = ({ user, handleUser }) => {
     // }, [])
 
     return (
-        <div className="flex justify-center">
+        <div className="flex justify-center bg-gray-100">
         <div className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow">
             <div className="flex flex-col items-center pb-10">
             <img src={user.profile_picture} alt='profile photograph' className="w-24 h-24 mb-3 rounded-full shadow-lg"/>

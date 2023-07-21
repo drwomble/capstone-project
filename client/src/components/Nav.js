@@ -12,13 +12,13 @@ const Nav = ({ user }) => {
         )
     }
     return (
-        <nav className='bg-white border-gray-200'>
+        <nav className='bg-white border border-green-300'>
             <div className='max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4'>
             <Link to='/' className="flex items-center">
                 <img alt='SkateExchange Logo' src='Logo.png' className='h-40 mr-3'/>
             </Link>
             <div className='hidden w-full md:block md:w-auto' id='navbar-default'>
-            <ul className='font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700'>
+            <ul className='font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white'>
                 <li>
                     <Link to='/decks' className="block py-2 pl-3 pr-4 text-emerald-950 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-emerald-500 md:p-0">Decks</Link>
                 </li>

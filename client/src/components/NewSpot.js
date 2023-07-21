@@ -57,7 +57,7 @@ const NewSpot = ({ addSpot }) => {
     })
 
     return (
-        <div className="px-40">
+        <div className="px-40 bg-gray-100">
             <form onSubmit={formik.handleSubmit}>
                 <div className="mb-6" >
                 <label className="block mb-2 text-sm font-medium text-gray-900">Name</label>

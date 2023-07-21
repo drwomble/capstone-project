@@ -26,7 +26,7 @@ const SignOut = ({ handleUser }) => {
     }
 
     return (
-        <div className="flex justify-center">
+        <div className="flex justify-center bg-gray-100">
             <h1 className="mb-2 mr-4 text-2xl font-bold text-gray-900">Are you sure you want to sign out?  </h1>
             <div className="flex justify-center">
             <button className='text-gray-900 bg-gradient-to-r from-teal-200 to-lime-200 hover:bg-gradient-to-l hover:from-teal-200 hover:to-lime-200 focus:ring-4 focus:outline-none focus:ring-lime-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2' onClick={handleSignOut}>Yes</button>
